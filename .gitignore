@@ -1,0 +1,13 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/CompanyAccounting/v17/.wsuo
+/.vs/CompanyAccounting/FileContentIndex/read.lock
+/.vs/CompanyAccounting/FileContentIndex/bec8a794-560a-488e-b813-330ea6096fa7.vsidx
+/CompanyAccounting/obj/Debug
+/CompanyAccounting.Strings/obj/Debug
+/CompanyAccounting.View/obj/Debug
+/CompanyAccounting.ViewModel/obj/Debug
+/packages
+/.vs
