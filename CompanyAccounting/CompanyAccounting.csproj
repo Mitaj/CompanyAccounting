@@ -119,6 +119,14 @@
       <Project>{2b524fa3-9cc4-4b78-a573-eef1e625acad}</Project>
       <Name>CompanyAccounting.Strings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CompanyAccounting.ViewModel\CompanyAccounting.ViewModel.csproj">
+      <Project>{8f29835f-7fae-4278-8b1b-0e8b3924ebe6}</Project>
+      <Name>CompanyAccounting.ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompanyAccounting.View\CompanyAccounting.View.csproj">
+      <Project>{51eb8152-1265-4ff0-b69a-8f747792bcc3}</Project>
+      <Name>CompanyAccounting.View</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

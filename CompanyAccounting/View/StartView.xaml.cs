@@ -4,16 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace CompanyAccounting.View
+
+namespace CompanyAccounting
 {
     /// <summary>
     /// Логика взаимодействия для StartView.xaml
@@ -23,6 +16,15 @@ namespace CompanyAccounting.View
         public StartView()
         {
             InitializeComponent();
+        }
+
+        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(e.NewValue is bool visible) || visible || 
+                !(StartViewGrid.DataContext is StartViewModel startVM))
+                return;
+
+            startVM.ShowCompaniesViewCommand.Execute(this);
         }
     }
 }
