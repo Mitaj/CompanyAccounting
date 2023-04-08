@@ -10,6 +10,17 @@ namespace CompanyAccounting.Model
     {
         public Company() { }
 
+        public int ID
+        {
+            get => _id;
+            set
+            {
+                if (_id == value)
+                    return;
+                _id = value;
+                RaisePropertyChanged("ID");
+            }
+        }
         public string Name
         {
             get => _name;
@@ -34,6 +45,7 @@ namespace CompanyAccounting.Model
             }   
         }
 
+        private int _id;
         private string _name;
         private DateTime _dateCreation;
     }

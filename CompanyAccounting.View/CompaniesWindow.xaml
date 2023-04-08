@@ -10,28 +10,48 @@
         mc:Ignorable="d" 
         Title="{Binding Title}"
         DataContext="">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/CompanyAccounting.View;component/Templates/ItemsEdit/ContentItemTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid VerticalAlignment="Stretch">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0"
-                    VerticalAlignment="Stretch">
-            <TreeView VerticalAlignment="Stretch"/>
-        </StackPanel>
+
+        <TreeView Grid.Column="0"
+                      VerticalAlignment="Stretch"
+                      ItemsSource="{Binding Companies}"
+                      SelectedItemChanged="TreeView_SelectedItemChanged">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Departments}">
+                    <TextBlock Text="{Binding Name}" />
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
         <GridSplitter Grid.Column="1"
                       ShowsPreview="False" 
                       Width="3"
                       HorizontalAlignment="Center" 
                       VerticalAlignment="Stretch"/>
-        <StackPanel Grid.Column="2">
-            <TextBlock Text="123"/>
-            <TextBlock Text="123"/>
-            <TextBlock Text="123"/>
-            <TextBlock Text="123"/>
-            <TextBlock Text="123"/>
-            <TextBlock Text="123"/>
-        </StackPanel>
+        <ScrollViewer Grid.Column="2"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <StackPanel Margin="10"
+                        Focusable="False">
+                <ContentControl Content="{Binding SelectedItem}"
+                                Focusable="False"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

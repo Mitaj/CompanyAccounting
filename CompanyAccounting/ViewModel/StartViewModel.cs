@@ -1,4 +1,5 @@
-﻿using CompanyAccounting.ViewModel;
+﻿using CompanyAccounting.Model;
+using CompanyAccounting.ViewModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -18,7 +19,7 @@ namespace CompanyAccounting
     {
         public StartViewModel() 
         {
-            LoadingOperations = new LoadingOperation[] { LoadLocator, LoadViewComponents };
+            LoadingOperations = new LoadingOperation[] { LoadLocator, LoadFirstlyData };
             Task.Factory.StartNew(LoadApplication);
         }
 
@@ -79,9 +80,10 @@ namespace CompanyAccounting
             ViewModelLocator.Instance.LoadInstances(ProductName);
         }
 
-        private void LoadViewComponents()
+        private void LoadFirstlyData()
         {
-           //var companiesView = CompaniesView;
+            var modelAssistance = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>();
+            modelAssistance?.LoadCompanies();
         }
 
         private void ShowCompaniesAccounting()

@@ -1,0 +1,13 @@
+﻿<ResourceDictionary x:Class="CompanyAccounting.View.Templates.ItemsEdit.ContentItemTemplates"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vmc="clr-namespace:CompanyAccounting.ViewModel;assembly=CompanyAccounting.ViewModel"
+                    
+             xmlns:local="clr-namespace:CompanyAccounting.View.Templates.ItemsEdit"
+             mc:Ignorable="d">
+    <DataTemplate DataType="{x:Type vmc:CompanyViewModel}">
+        <TextBlock Text="Is company"/>
+    </DataTemplate>
+</ResourceDictionary>

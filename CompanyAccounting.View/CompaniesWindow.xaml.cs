@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CompanyAccounting.ViewModel;
+using GalaSoft.MvvmLight;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,14 @@ namespace CompanyAccounting.View
         public CompaniesWindow()
         {
             InitializeComponent();
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (!(DataContext is CompaniesViewModel companiesVM) || !(e.NewValue is ViewModelBase newValue))
+                return;
+
+            companiesVM.SelectedItem = newValue;
         }
     }
 }

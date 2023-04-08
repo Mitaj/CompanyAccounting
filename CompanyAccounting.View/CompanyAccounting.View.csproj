@@ -79,9 +79,16 @@
     <Compile Include="CompaniesWindow.xaml.cs">
       <DependentUpon>CompaniesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Templates\ItemsEdit\ContentItemTemplates.xaml.cs">
+      <DependentUpon>ContentItemTemplates.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="CompaniesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\ItemsEdit\ContentItemTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

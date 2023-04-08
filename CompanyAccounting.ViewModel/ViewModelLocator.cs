@@ -1,8 +1,11 @@
 ﻿using CommonServiceLocator;
+using CompanyAccounting.Model;
+using CompanyAccounting.Model.RegistryData;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -36,6 +39,12 @@ namespace CompanyAccounting.ViewModel
 
         public void LoadInstances(string productName)
         {
+            var modelAssistance = new ModelAssistant();
+            var savedConnectionString = RegistryAssistance.GetRegistryParamValue(RegistryParam.ConnectionString);
+            RegistryAssistance.SetRegistryParamValue(RegistryParam.ConnectionString, TestConnectionString);
+            savedConnectionString = RegistryAssistance.GetRegistryParamValue(RegistryParam.ConnectionString);
+            modelAssistance.SetConnectionString(savedConnectionString);
+            IoC.Register(() => modelAssistance);
             IoC.Register(() => new CompaniesViewModel(productName));
         }
 
@@ -44,5 +53,6 @@ namespace CompanyAccounting.ViewModel
             ServiceLocator.SetLocatorProvider(() => IoC);
         }
 
+        private const string TestConnectionString = "Host=localhost;Port=5432;Database=company_accounting;Username=user_db;Password=123";
     }
 }

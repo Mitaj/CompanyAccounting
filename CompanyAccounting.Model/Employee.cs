@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CompanyAccounting.Model
 {
-    internal class Employee
+    public class Employee
     {
     }
 }

@@ -57,11 +57,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompaniesViewModel.cs" />
+    <Compile Include="CompanyViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompanyAccounting.Model\CompanyAccounting.Model.csproj">
+      <Project>{864a9783-c098-4a1e-9b79-64853c6d3dd2}</Project>
+      <Name>CompanyAccounting.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

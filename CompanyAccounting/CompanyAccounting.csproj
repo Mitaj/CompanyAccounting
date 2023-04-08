@@ -115,6 +115,10 @@
     <Resource Include="Images\SplashScreen.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CompanyAccounting.Model\CompanyAccounting.Model.csproj">
+      <Project>{864A9783-C098-4A1E-9B79-64853C6D3DD2}</Project>
+      <Name>CompanyAccounting.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CompanyAccounting.Strings\CompanyAccounting.Strings.csproj">
       <Project>{2b524fa3-9cc4-4b78-a573-eef1e625acad}</Project>
       <Name>CompanyAccounting.Strings</Name>
