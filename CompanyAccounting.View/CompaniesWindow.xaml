@@ -25,19 +25,31 @@
         </Grid.ColumnDefinitions>
 
         <TreeView Grid.Column="0"
-                      VerticalAlignment="Stretch"
-                      ItemsSource="{Binding Companies}"
-                      SelectedItemChanged="TreeView_SelectedItemChanged">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Path=Departments}">
-                    <TextBlock Text="{Binding Name}" />
-                    <HierarchicalDataTemplate.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </HierarchicalDataTemplate.ItemTemplate>
+                  VerticalAlignment="Stretch"
+                  ItemsSource="{Binding Companies}"
+                  SelectedItemChanged="TreeView_SelectedItemChanged">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type vm:CompanyViewModel}" ItemsSource="{Binding Departments}">
+                    <StackPanel Orientation="Horizontal">
+     
+                        <TextBlock Text="{Binding Name}" />
+               
+                    </StackPanel>
                 </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:DepartmentViewModel}">
+                    <StackPanel Orientation="Horizontal">
+              
+                        <TextBlock Text="{Binding Name}" />
+  
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
         </TreeView>
         <GridSplitter Grid.Column="1"
                       ShowsPreview="False" 

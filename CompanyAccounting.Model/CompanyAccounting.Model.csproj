@@ -225,17 +225,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseObject.cs" />
+    <Compile Include="BaseTableObject.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="DataBaseComponents\DataBaseAssistant.cs" />
     <Compile Include="Department.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="JobInformation.cs" />
     <Compile Include="ModelAssistant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegistryData\RegistryAssistance.cs" />
     <Compile Include="RegistryData\RegistryParam.cs" />
+    <Compile Include="WorkbookEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompanyAccounting.Strings\CompanyAccounting.Strings.csproj">
+      <Project>{2b524fa3-9cc4-4b78-a573-eef1e625acad}</Project>
+      <Name>CompanyAccounting.Strings</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

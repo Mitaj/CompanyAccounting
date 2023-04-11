@@ -61,6 +61,24 @@ namespace CompanyAccounting.Strings.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Название.
+        /// </summary>
+        public static string CompanyName {
+            get {
+                return ResourceManager.GetString("CompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя.
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на [{0}/{1}] {2}.
         /// </summary>
         public static string IterationLoadingTemplate {
@@ -70,11 +88,56 @@ namespace CompanyAccounting.Strings.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Фамилия.
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Загрузка необходимых компонентов.
         /// </summary>
         public static string MainLoadingIterationName {
             get {
                 return ResourceManager.GetString("MainLoadingIterationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на DateCreation.
+        /// </summary>
+        public static string PropertyNameDateCreation {
+            get {
+                return ResourceManager.GetString("PropertyNameDateCreation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ID.
+        /// </summary>
+        public static string PropertyNameID {
+            get {
+                return ResourceManager.GetString("PropertyNameID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Name.
+        /// </summary>
+        public static string PropertyNameName {
+            get {
+                return ResourceManager.GetString("PropertyNameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отчество.
+        /// </summary>
+        public static string SecondName {
+            get {
+                return ResourceManager.GetString("SecondName", resourceCulture);
             }
         }
         

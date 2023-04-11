@@ -4,10 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vmc="clr-namespace:CompanyAccounting.ViewModel;assembly=CompanyAccounting.ViewModel"
-                    
+             xmlns:cas="clr-namespace:CompanyAccounting.Strings.Properties;assembly=CompanyAccounting.Strings"       
              xmlns:local="clr-namespace:CompanyAccounting.View.Templates.ItemsEdit"
              mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/CompanyAccounting.View;component/Styles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <DataTemplate DataType="{x:Type vmc:CompanyViewModel}">
-        <TextBlock Text="Is company"/>
+        <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
+            <StackPanel Style="{StaticResource LabelValuePanel}">
+                <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
+                           Style="{StaticResource PropertyLabelBlock}" />
+                <TextBox Text="{Binding Name}"
+                         Style="{StaticResource ValueBlock}"/>
+            </StackPanel>
+
+            <StackPanel Style="{StaticResource LabelValuePanel}">
+                <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
+                           Style="{StaticResource PropertyLabelBlock}" />
+                <DatePicker SelectedDate="{Binding DateCreation}"
+                            Style="{StaticResource DateValueBlock}"/>
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

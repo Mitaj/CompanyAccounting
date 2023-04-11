@@ -19,7 +19,7 @@ namespace CompanyAccounting
     {
         public StartViewModel() 
         {
-            LoadingOperations = new LoadingOperation[] { LoadLocator, LoadFirstlyData };
+            LoadingOperations = new LoadingOperation[] { LoadLocator, LoadFirstData, LoadSecondData };
             Task.Factory.StartNew(LoadApplication);
         }
 
@@ -80,10 +80,16 @@ namespace CompanyAccounting
             ViewModelLocator.Instance.LoadInstances(ProductName);
         }
 
-        private void LoadFirstlyData()
+        private void LoadFirstData()
         {
             var modelAssistance = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>();
             modelAssistance?.LoadCompanies();
+        }
+
+        private void LoadSecondData()
+        {
+            var modelAssistance = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>();
+            modelAssistance?.LoadDepartments();
         }
 
         private void ShowCompaniesAccounting()

@@ -9,15 +9,19 @@ namespace CompanyAccounting.Model.DataBaseComponents
 {
     internal class DataBaseAssistant : DbContext
     {
-        public DataBaseAssistant(string connectionString) 
-        { 
-            ConnectionString = connectionString;
+        public DataBaseAssistant() 
+        {
+            ChangeTracker.AutoDetectChangesEnabled = false;
         }
-        public string ConnectionString { get; private set; }
+        internal static string ConnectionString { get; private set; }
 
         public DbSet<Company> Companies { get; set; } = null;
+        public DbSet<Department> Departments { get; set; } = null;
+        public DbSet<WorkbookEntry> WorkbookEntries { get; set; } = null;
+        public DbSet<Employee> Employees { get; set; } = null;
+        public DbSet<Employee> JobInformations { get; set; } = null;
 
-        internal void SetConnectionString(string connectionString)
+        internal static void SetConnectionString(string connectionString)
         {
             ConnectionString = connectionString;
         }

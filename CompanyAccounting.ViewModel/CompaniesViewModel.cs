@@ -14,8 +14,8 @@ namespace CompanyAccounting.ViewModel
         public CompaniesViewModel(string title)
         { 
             Title = title;
-            _companies = new ObservableCollection<CompanyViewModel>();
-            RefreshCompanies();
+            Companies = new ObservableCollection<CompanyViewModel>();
+            LoadCompanies();
         }
 
         public string Title
@@ -40,27 +40,38 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
-        public void RefreshCompanies()
+        private void RefreshSelectedObject()
         {
-            _companies.Clear();
+            if (_selectedItem is CompanyViewModel)
+            { 
+            
+            }
+        }
+
+        public void LoadCompanies()
+        {
+            Companies.Clear();
             var loadedCompanyModels = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().Companies;
             if (loadedCompanyModels == null || loadedCompanyModels.Count == 0)
             {
                 RaisePropertyChanged(nameof(Companies));
                 return;
             }
+
             foreach ( var company in loadedCompanyModels) 
             {
-                _companies.Add(new CompanyViewModel(company));
+                var companyVM = new CompanyViewModel(company);
+                companyVM.Departments.Clear();
+                foreach (var department in company.Departments)
+                    companyVM.Departments.Add(new DepartmentViewModel(company, department));
+
+                Companies.Add(companyVM);
             }
 
             RaisePropertyChanged(nameof(Companies));
         }
 
-        public ObservableCollection<CompanyViewModel> Companies => _companies;
-
-        private readonly ObservableCollection<CompanyViewModel> _companies;
-
+        public readonly ObservableCollection<CompanyViewModel> Companies;
         private string _title;
         private ViewModelBase _selectedItem;
 
