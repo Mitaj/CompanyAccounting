@@ -8,62 +8,158 @@
         xmlns:vm="clr-namespace:CompanyAccounting.ViewModel;assembly=CompanyAccounting.ViewModel"
         d:DataContext="{d:DesignInstance vm:CompaniesViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d" 
-        Title="{Binding Title}"
-        DataContext="">
+        Title="{Binding Title}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/CompanyAccounting.View;component/Templates/ItemsEdit/ContentItemTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid VerticalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0"
+                  Header="Управление">
+            <StackPanel>
+                <StackPanel Visibility="{Binding ControlPanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            Orientation="Horizontal">
+                    <Button Content="Добавить компанию" 
+                            Command="{Binding AddCompanyCommand}"
+                            Margin="6 4"/>
+                    <Button Content="Добавить" 
+                            Command="{Binding AddItemCommand}"
+                            Margin="6 4"/>
+                    <Button Content="Удалить"
+                            Command="{Binding DeleteItemCommand}"
+                            Margin="0 4"/>
+                </StackPanel>
+                <StackPanel Visibility="{Binding AddCompanyPanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            Orientation="Horizontal">
+                    <Button Content="Отмена" 
+                            Command="{Binding CancelAddCompanyCommand}"
+                            Margin="6 4"/>
+                    <Button Content="Сохранить компанию" 
+                            Command="{Binding ApplyAddCompanyCommand}"
+                            Margin="6 4"/>
+                    <TextBlock Text="Название:"
+                               VerticalAlignment="Center"
+                               Margin="2"/>
+                    <TextBox Text="{Binding AddCompanyName, Mode=TwoWay}"  
+                             Width="200"
+                             Margin="4"/>
+                    <TextBlock Text="Дата создания:"
+                               VerticalAlignment="Center"
+                               Margin="2"/>
+                    <DatePicker SelectedDate="{Binding AddCompanyDateCreation, Mode=TwoWay}"
+                                Width="200"
+                                Margin="2"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <Grid Grid.Row="1"
+              VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <TreeView Grid.Column="0"
+            <TreeView Grid.Column="0"
                   VerticalAlignment="Stretch"
                   ItemsSource="{Binding Companies}"
+                  ItemContainerStyle="{StaticResource TreeViewMainItem}"
                   SelectedItemChanged="TreeView_SelectedItemChanged">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type vm:CompanyViewModel}" ItemsSource="{Binding Departments}">
-                    <StackPanel Orientation="Horizontal">
-     
-                        <TextBlock Text="{Binding Name}" />
-               
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type vm:DepartmentViewModel}">
-                    <StackPanel Orientation="Horizontal">
-              
-                        <TextBlock Text="{Binding Name}" />
-  
-                    </StackPanel>
-                </DataTemplate>
-            </TreeView.Resources>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="TreeViewItem">
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
-                </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
-        <GridSplitter Grid.Column="1"
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type vm:CompanyViewModel}" ItemsSource="{Binding Departments}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="32" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0"
+                                   Source="Images/company.png"
+                                   Stretch="Fill"
+                                   Height="28"
+                                   Width="28"
+                                   Margin="2"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       VerticalAlignment="Center"
+                                       Margin="4 0 0 0"/>
+                        </Grid>
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type vm:DepartmentViewModel}" ItemsSource="{Binding Employees}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="32" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0"
+                                           Source="Images/department.png"
+                                           Stretch="Fill"
+                                           Height="28"
+                                           Width="28"
+                                           Margin="2"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               VerticalAlignment="Center"
+                                               Margin="4 0 0 0"/>
+                                </Grid>
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="32" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Grid.Column="0"
+                                                   Stretch="Fill"
+                                                   Height="28"
+                                                   Width="28"
+                                                   Margin="2">
+                                                <Image.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsSupervisor}" Value="False">
+                                                                <Setter Property="Source" Value="Images/employee.png"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding IsSupervisor}" Value="True">
+                                                                <Setter Property="Source" Value="Images/supervisor.png"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding Name}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="4 0 0 0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <GridSplitter Grid.Column="1"
                       ShowsPreview="False" 
                       Width="3"
                       HorizontalAlignment="Center" 
                       VerticalAlignment="Stretch"/>
-        <ScrollViewer Grid.Column="2"
+            <ScrollViewer Grid.Column="2"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Auto">
-            <StackPanel Margin="10"
+                <StackPanel Margin="10"
                         Focusable="False">
-                <ContentControl Content="{Binding SelectedItem}"
+                    <ContentControl Content="{Binding SelectedItem}"
                                 Focusable="False"/>
-            </StackPanel>
-        </ScrollViewer>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>

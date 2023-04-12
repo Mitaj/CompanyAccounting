@@ -14,7 +14,7 @@ namespace CompanyAccounting.ViewModel
         public CompanyViewModel(Company company)   
         {
             _company = company;
-            Departments = new ObservableCollection<DepartmentViewModel>();
+            _departments = new ObservableCollection<DepartmentViewModel>();
             Init();
         }
 
@@ -46,10 +46,10 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
-        public bool IsExpanded 
+        public bool IsExpanded
         {
             get => _isExpanded;
-            set 
+            set
             {
                 if (_isExpanded == value)
                     return;
@@ -58,8 +58,8 @@ namespace CompanyAccounting.ViewModel
                 LoadIfNeedEmployees();
                 RaisePropertyChanged(nameof(IsExpanded));
             }
-        }        
-        
+        }
+
         public bool IsSelected 
         {
             get => _isSelected;
@@ -74,16 +74,16 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
-        public readonly ObservableCollection<DepartmentViewModel> Departments;
+        public ObservableCollection<DepartmentViewModel> Departments => _departments;
 
         private void Init()
         {
             _loaded = false;
+            _isSelected = false;
+            _isExpanded = false;
             foreach (var department in _company.Departments)
                 Departments.Add(new DepartmentViewModel(_company, department));
             RaisePropertyChanged(() => Departments);
-
-            LoadIfNeedEmployees();
         }
 
         private void LoadIfNeedEmployees()
@@ -95,12 +95,13 @@ namespace CompanyAccounting.ViewModel
             {
                 department.LoadEmployees();
             }
+            _loaded = true;
         }
 
+        public readonly ObservableCollection<DepartmentViewModel> _departments;
         private readonly Company _company;
-
-        private bool _isExpanded;
         private bool _isSelected;
+        private bool _isExpanded;
         private bool _loaded;
     }
 }

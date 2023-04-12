@@ -18,10 +18,10 @@ namespace CompanyAccounting.Model
 {
     public class ModelAssistant : BaseObject
     {
-        public ModelAssistant() 
-        { 
+        public ModelAssistant()
+        {
             Companies = new ObservableCollection<Company>();
-            //DBAssistant = new DataBaseAssistant();
+            Employees = new ObservableCollection<Employee>();
         }
 
         public void LoadCompanies()
@@ -38,7 +38,7 @@ namespace CompanyAccounting.Model
 
             foreach (var company in Companies)
             {
-                var loadDepartmentsTask = Task.Run(() => LoadDepartmentsAsyncTask(company));
+                var loadDepartmentsTask = Task.Run(() => LoadDepartmentsAsyncTask(this, company));
                 loadDepartmentsTask.Wait();
             }
         }
@@ -49,89 +49,41 @@ namespace CompanyAccounting.Model
                 return;
 
             foreach (var department in company.Departments)
-            {
-                var loadEmployeesTask = Task.Run(() => LoadEmployeesAsyncTask(department));
-                loadEmployeesTask.Wait();
-            }      
+                LoadEmployees(department);
         }
 
-        private static async Task LoadCompaniesAsyncTask(ModelAssistant assistant)
+        public void LoadEmployees(Department department)
         {
-            if(assistant.Companies == null)
-                assistant.Companies = new ObservableCollection<Company>();
+            if (department == null)
+                return;
 
-            using (var context = new DataBaseAssistant())
-            {
-                assistant.Companies.Clear();
-                await context.Companies.LoadAsync();
-                foreach (var company in context.Companies.AsEnumerable())
-                {
-                    company.PropertyChanged += assistant.Company_PropertyChanged;
-                    assistant.Companies.Add(company);
-                }
-            }
+            var loadEmployeesTask = Task.Run(() => LoadEmployeesAsyncTask(this, department));
+            loadEmployeesTask.Wait();
         }
 
-        private static async Task LoadDepartmentsAsyncTask(Company company)
+        public Company AddCompany(string name, DateTime dateCreation)
         {
-            using (var context = new DataBaseAssistant())
+            var company = new Company();
+            company.Name = name;
+            company.DateCreation = dateCreation;
+            try
             {
-                company.Departments.Clear();
-                var loadedDepartments = await context.Departments
-                                       .Where(d => d.CompanyID == company.ID)
-                                       .ToListAsync();
-
-                company.SetDepartments(loadedDepartments);
+                var task = Task.Run(() => AddTableItemAsyncTask(this, company));
+                task.Wait();
             }
-        }
-
-        private static async Task LoadEmployeesAsyncTask(Department department)
-        {
-            using (var context = new DataBaseAssistant())
+            catch (ArgumentNullException)
             {
-                department.Employees.Clear();
-                var loadedWorkBookEntries = await context.WorkbookEntries
-                                            .Where(w => w.DepartmentID == department.ID)
-                                            .ToListAsync();
-
-                if (loadedWorkBookEntries == null)
-                    return;
-                foreach (var entry in loadedWorkBookEntries)
-                {
-                    var loadedEmployees = await context.Employees
-                                          .Where(e => e.ID == department.ID)
-                                          .ToListAsync();
-                    if (loadedEmployees == null)
-                        continue;
-
-                    department.SetEmployees(loadedEmployees);
-                }
-
-                foreach (var employee in department.Employees)
-                {
-                    var loadedWorkbookEntries = await context.WorkbookEntries
-                                                .Where(w => w.EmployeeID == employee.ID)
-                                                .OrderBy(w => w.DateEmployment)
-                                                .ToListAsync();
-
-                    if (loadedWorkbookEntries == null)
-                        continue;
-
-                    employee.SetWorkbookEntries(loadedWorkbookEntries);
-                }
-
-                await context.JobInformations.LoadAsync();
+                return null;
             }
-        }
-
-        private static async Task<Company> SaveChangesAsyncTask(Company company)
-        {
-            using (var context = new DataBaseAssistant())
+            catch (AggregateException)
             {
-                context.Entry(company).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-                return company;
+                return null;
             }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+            return company;
         }
 
         public void SetConnectionString(string connectionString)
@@ -140,21 +92,121 @@ namespace CompanyAccounting.Model
         }
 
         public ObservableCollection<Company> Companies { get; private set; }
-        
+        public ObservableCollection<Employee> Employees { get; private set; }
 
-        private void Company_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void TableItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!(sender is Company company))
+            if (!(sender is BaseTableObject tableObject))
                 return;
 
-            UpdateData(company);
+            UpdateData(tableObject);
         }
 
-        private void UpdateData(Company company)
+        private void UpdateData(BaseTableObject tableItem)
         {
-            var task = Task.Run(() => SaveChangesAsyncTask(company));
+            var task = Task.Run(() => SaveChangesAsyncTask(tableItem));
             task.Wait();
             RaisePropertyChanged(nameof(Companies));
+        }
+
+        private static async Task LoadCompaniesAsyncTask(ModelAssistant assistant)
+        {
+            if (assistant.Companies == null)
+                assistant.Companies = new ObservableCollection<Company>();
+
+            using (var context = new DataBaseAssistant())
+            {
+                if(assistant.Companies != null)
+                    foreach(var company in assistant.Companies)
+                        company.PropertyChanged -= assistant.TableItem_PropertyChanged;
+                assistant.Companies.Clear();
+                await context.Companies.LoadAsync();
+                foreach (var company in context.Companies.AsEnumerable())
+                {
+                    company.PropertyChanged += assistant.TableItem_PropertyChanged;
+                    assistant.Companies.Add(company);
+                }
+            }
+        }
+
+        private static async Task LoadDepartmentsAsyncTask(ModelAssistant assistant, Company company)
+        {
+            using (var context = new DataBaseAssistant())
+            {
+                if(company.Departments != null)
+                    foreach(var department in company.Departments)
+                        department.PropertyChanged -= assistant.TableItem_PropertyChanged;
+                company.Departments.Clear();
+
+                var loadedDepartments = await context.Departments
+                                       .Where(d => d.CompanyID == company.ID)
+                                       .ToListAsync();
+                if (loadedDepartments != null)
+                    foreach (var department in loadedDepartments)
+                    {
+                        department.PropertyChanged += assistant.TableItem_PropertyChanged;
+                    }
+                company.SetDepartments(loadedDepartments);
+            }
+        }
+
+        private static async Task LoadEmployeesAsyncTask(ModelAssistant assistant, Department department)
+        {
+            using (var context = new DataBaseAssistant())
+            {
+                if (department.WorkbookEntries != null)
+                    foreach (var entry in department.WorkbookEntries)
+                        entry.PropertyChanged -= assistant.TableItem_PropertyChanged;
+                department.WorkbookEntries.Clear();
+                var loadedWorkBookEntries = await context.WorkbookEntries
+                                            .Where(w => w.DepartmentID == department.ID)
+                                            .ToListAsync();
+
+                if (loadedWorkBookEntries == null)
+                    return;
+
+                foreach(var entry in loadedWorkBookEntries)
+                    entry.PropertyChanged += assistant.TableItem_PropertyChanged;
+                department.SetWorkbookEntries(loadedWorkBookEntries);
+                foreach (var entry in loadedWorkBookEntries)
+                {
+                    var employee = await context.Employees
+                                   .Where(e => e.ID == entry.EmployeeID)
+                                   .SingleOrDefaultAsync();
+                    if (employee == null || assistant.Employees.Any(e => e.ID == employee.ID))
+                        continue;
+
+                    employee.PropertyChanged += assistant.TableItem_PropertyChanged;
+                    assistant.Employees.Add(employee);
+                }
+
+                await context.JobInformations.LoadAsync();
+            }
+        }
+
+        private static async Task<BaseTableObject> SaveChangesAsyncTask(BaseTableObject tableItem)
+        {
+            using (var context = new DataBaseAssistant())
+            {
+                context.Entry(tableItem).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                return tableItem;
+            }
+        }
+
+        private static async Task<BaseTableObject> AddTableItemAsyncTask(ModelAssistant assistant, BaseTableObject tableItem)
+        {
+            using (var context = new DataBaseAssistant())
+            {
+                await context.AddRangeAsync(tableItem);
+                await context.SaveChangesAsync();
+                if (tableItem is Company company)
+                {
+                    company.PropertyChanged += assistant.TableItem_PropertyChanged;
+                    assistant.Companies.Add(company);
+                }
+                return tableItem;
+            }
         }
     }
 }

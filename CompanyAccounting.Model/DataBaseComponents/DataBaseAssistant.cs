@@ -19,7 +19,7 @@ namespace CompanyAccounting.Model.DataBaseComponents
         public DbSet<Department> Departments { get; set; } = null;
         public DbSet<WorkbookEntry> WorkbookEntries { get; set; } = null;
         public DbSet<Employee> Employees { get; set; } = null;
-        public DbSet<Employee> JobInformations { get; set; } = null;
+        public DbSet<JobInformation> JobInformations { get; set; } = null;
 
         internal static void SetConnectionString(string connectionString)
         {

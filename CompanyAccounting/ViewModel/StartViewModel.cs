@@ -110,7 +110,7 @@ namespace CompanyAccounting
             var viewCompanies = new View.CompaniesWindow();
             viewCompanies.Width = MainView_Width;
             viewCompanies.Height = MainView_Height;
-            viewCompanies. DataContext = viewModel;
+            viewCompanies.DataContext = viewModel;
             viewCompanies.Closed += CompaniesView_Closed;
             viewCompanies.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             return viewCompanies;

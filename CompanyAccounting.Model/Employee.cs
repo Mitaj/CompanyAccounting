@@ -11,7 +11,7 @@ namespace CompanyAccounting.Model
     {
         public Employee() 
         {
-            WorkbookEntries = new ObservableCollection<WorkbookEntry>();
+          
         }
 
         public string FirstName
@@ -62,17 +62,7 @@ namespace CompanyAccounting.Model
             }
         }
 
-        public readonly ObservableCollection<WorkbookEntry> WorkbookEntries;
-
-        internal void SetWorkbookEntries(IEnumerable<WorkbookEntry> workbookEntries)
-        {
-            WorkbookEntries.Clear();
-            if (workbookEntries == null)
-                return;
-
-            foreach (var entry in workbookEntries)
-                WorkbookEntries.Add(entry);
-        }
+        
 
         private string _firstName;
         private string _secondName;

@@ -15,6 +15,8 @@ namespace CompanyAccounting.ViewModel
         {
             _department = department;
             Parent = parent;
+            _isExpanded = false;
+            _employees = new ObservableCollection<EmployeeViewModel>();
         }
 
         public string Name
@@ -30,16 +32,30 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
-        public readonly ObservableCollection<EmployeeViewModel> Employees;
+        public ObservableCollection<EmployeeViewModel> Employees => _employees;
 
         public readonly Company Parent;
         internal void LoadEmployees()
         {
-            Employees.Clear();
-            foreach (var employee in _department.Employees)
-                Employees.Add(new EmployeeViewModel(_department, employee));
+            _employees.Clear();
+            var loadedEmployees = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().Employees;
+            foreach (var workbookEntry in _department.WorkbookEntries)
+            {
+                var employee = loadedEmployees.FirstOrDefault(x => x.ID == workbookEntry.EmployeeID);
+                if (employee != null)
+                    _employees.Add(new EmployeeViewModel(_department, employee));
+            }
             RaisePropertyChanged(() => Employees);
         }
+
+        private void LoadIfNeedEmployees()
+        {
+            ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().LoadEmployees(_department);
+            LoadEmployees();
+        }
+
+        private readonly ObservableCollection<EmployeeViewModel> _employees;
         private readonly Department _department;
+        private bool _isExpanded;
     }
 }

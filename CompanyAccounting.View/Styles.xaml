@@ -6,8 +6,23 @@
              xmlns:local="clr-namespace:CompanyAccounting.View"
              mc:Ignorable="d">
 
+    <Style TargetType="TextBlock" 
+           x:Key="ContentItemTitle">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Background" Value="LightGray"/>
+    </Style>
+    <Style TargetType="TreeViewItem"
+           x:Key="TreeViewMainItem">
+        
+        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+    </Style>
+    
     <Style TargetType="StackPanel"
-         x:Key="ObjectPropertiesBlock">
+           x:Key="ObjectPropertiesBlock">
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Focusable" Value="False"/>
     </Style>

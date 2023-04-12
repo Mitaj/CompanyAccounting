@@ -12,19 +12,76 @@
     </ResourceDictionary.MergedDictionaries>
     
     <DataTemplate DataType="{x:Type vmc:CompanyViewModel}">
-        <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
-            <StackPanel Style="{StaticResource LabelValuePanel}">
-                <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
-                           Style="{StaticResource PropertyLabelBlock}" />
-                <TextBox Text="{Binding Name}"
-                         Style="{StaticResource ValueBlock}"/>
-            </StackPanel>
+        <StackPanel>
+            <TextBlock Text="{Binding Source={x:Static cas:Resources.Company}}"
+                       Style="{StaticResource ContentItemTitle}"/>
+            <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <TextBox Text="{Binding Name}"
+                             Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
 
-            <StackPanel Style="{StaticResource LabelValuePanel}">
-                <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
-                           Style="{StaticResource PropertyLabelBlock}" />
-                <DatePicker SelectedDate="{Binding DateCreation}"
-                            Style="{StaticResource DateValueBlock}"/>
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.DateCreation}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <DatePicker SelectedDate="{Binding DateCreation}"
+                                Style="{StaticResource DateValueBlock}"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmc:DepartmentViewModel}">
+        <StackPanel>
+            <TextBlock Text="{Binding Source={x:Static cas:Resources.Department}}"
+                       Style="{StaticResource ContentItemTitle}"/>
+            <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <TextBox Text="{Binding Name}"
+                             Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
+
+            </StackPanel>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vmc:EmployeeViewModel}">
+        <StackPanel>
+            <TextBlock Text="{Binding Source={x:Static cas:Resources.Employee}}"
+                       Style="{StaticResource ContentItemTitle}"/>
+            <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.LastName}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <TextBox Text="{Binding LastName}"
+                             Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.FirstName}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <TextBox Text="{Binding FirstName}"
+                             Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.SecondName}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <TextBox Text="{Binding SecondName}"
+                             Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="{Binding Source={x:Static cas:Resources.Birthday}, StringFormat='{}{0}:'}"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <DatePicker SelectedDate="{Binding Birthday}"
+                                Style="{StaticResource DateValueBlock}"/>
+                </StackPanel>
+
             </StackPanel>
         </StackPanel>
     </DataTemplate>

@@ -13,7 +13,7 @@ namespace CompanyAccounting.Model
     {
         public Department() 
         {
-            Employees = new ObservableCollection<Employee>();
+            _workbookEntries = new ObservableCollection<WorkbookEntry>();
         }
 
         public int CompanyID
@@ -25,6 +25,18 @@ namespace CompanyAccounting.Model
                     return;
                 _company_id = value;
                 RaisePropertyChanged(nameof(CompanyID));
+            }
+        }
+
+        public int SupervisorID
+        {
+            get => _supervisor_id;
+            set
+            {
+                if (_supervisor_id == value)
+                    return;
+                _supervisor_id = value;
+                RaisePropertyChanged(nameof(SupervisorID));
             }
         }
 
@@ -40,19 +52,22 @@ namespace CompanyAccounting.Model
             }
         }
 
-        public readonly ObservableCollection<Employee> Employees;
+        public ObservableCollection<WorkbookEntry> WorkbookEntries => _workbookEntries;
 
-        internal void SetEmployees(IEnumerable<Employee> employees)
+        internal void SetWorkbookEntries(IEnumerable<WorkbookEntry> entries)
         {
-            Employees.Clear();
-            if (employees == null)
+            _workbookEntries.Clear();
+            if (_workbookEntries == null)
                 return;
 
-            foreach (var employee in employees)
-                Employees.Add(employee);
+            foreach (var entry in entries)
+                _workbookEntries.Add(entry);
+            RaisePropertyChanged(nameof(WorkbookEntries));
         }
 
+        public readonly ObservableCollection<WorkbookEntry> _workbookEntries;
         private int _company_id;
+        private int _supervisor_id;
         private string _name;
     }
 }
