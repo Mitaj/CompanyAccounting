@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace CompanyAccounting.ViewModel
 {
-    public class EmployeeViewModel : ViewModelBase
+    public class EmployeeViewModel : BaseElementViewModel
     {
-        public EmployeeViewModel(Department parent, Employee employee)
+        public EmployeeViewModel(Department parent, Employee employee) 
+            : base(employee)
         {
             Parent = parent;
             _employee = employee;

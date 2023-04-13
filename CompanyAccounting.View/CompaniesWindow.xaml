@@ -6,6 +6,7 @@
         xmlns:t="http://schemas.telerik.com/2008/xaml/presentation"
         xmlns:local="clr-namespace:CompanyAccounting.View"
         xmlns:vm="clr-namespace:CompanyAccounting.ViewModel;assembly=CompanyAccounting.ViewModel"
+        xmlns:cas="clr-namespace:CompanyAccounting.Strings.Properties;assembly=CompanyAccounting.Strings"     
         d:DataContext="{d:DesignInstance vm:CompaniesViewModel, IsDesignTimeCreatable=False}"
         mc:Ignorable="d" 
         Title="{Binding Title}">
@@ -19,7 +20,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0"
@@ -48,7 +49,7 @@
                     <TextBlock Text="Название:"
                                VerticalAlignment="Center"
                                Margin="2"/>
-                    <TextBox Text="{Binding AddCompanyName, Mode=TwoWay}"  
+                    <TextBox Text="{Binding AddCompanyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                              Width="200"
                              Margin="4"/>
                     <TextBlock Text="Дата создания:"
@@ -58,10 +59,82 @@
                                 Width="200"
                                 Margin="2"/>
                 </StackPanel>
+                <StackPanel Visibility="{Binding AddDepartmentPanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            Orientation="Horizontal">
+                    <Button Content="Отмена" 
+                            Command="{Binding CancelAddDepartmentCommand}"
+                            Margin="6 4"/>
+                    <Button Content="Сохранить подразделение" 
+                            Command="{Binding ApplyAddDepartmentCommand}"
+                            Margin="6 4"/>
+                    <TextBlock Text="Название:"
+                               VerticalAlignment="Center"
+                               Margin="2"/>
+                    <TextBox Text="{Binding AddDepartmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                             Width="200"
+                             Margin="4"/>
+                </StackPanel>
+                
+                <StackPanel Visibility="{Binding AddEmployeePanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal"
+                                Height="28">
+                        <Button Content="Отмена" 
+                                Command="{Binding CancelAddEmployeeCommand}"
+                                Margin="6 4"/>
+                        <Button Content="Сохранить сотрудника" 
+                                Command="{Binding ApplyAddEmployeeCommand}"
+                                Margin="6 4"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Source={x:Static cas:Resources.LastName}, StringFormat='{}{0}:'}"
+                                       VerticalAlignment="Center"
+                                       Margin="2"/>
+                            <TextBox Text="{Binding AddEmployeeLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                     Width="200"
+                                     Margin="4"/>
+                            <TextBlock Text="{Binding Source={x:Static cas:Resources.FirstName}, StringFormat='{}{0}:'}"
+                                       VerticalAlignment="Center"
+                                       Margin="2"/>
+                            <TextBox Text="{Binding AddEmployeeFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                     Width="200"
+                                     Margin="4"/>
+                            <TextBlock Text="{Binding Source={x:Static cas:Resources.SecondName}, StringFormat='{}{0}:'}"
+                                       VerticalAlignment="Center"
+                                       Margin="2"/>
+                            <TextBox Text="{Binding AddEmployeeSecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                     Width="200"
+                                     Margin="4"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Дата рождения:"
+                                       VerticalAlignment="Center"
+                                       Margin="2"/>
+                            <DatePicker SelectedDate="{Binding AddEmployeeBirthday, Mode=TwoWay}"
+                                        Width="200"
+                                        Margin="2"/>
+                            <TextBlock Text="Должность:"
+                                       VerticalAlignment="Center"
+                                       Margin="2"/>
+                            <TextBox Text="{Binding AddPositionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                     Width="200"
+                                     Margin="4"/>
+                            <TextBlock Text="Заработная плата:"
+                                       VerticalAlignment="Center"
+                                       Margin="2"/>
+                            <TextBox Text="{Binding AddSalarySumm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                     Width="200"
+                                     Margin="4"
+                                     PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </GroupBox>
         <Grid Grid.Row="1"
-              VerticalAlignment="Stretch">
+              VerticalAlignment="Stretch"
+              IsEnabled="{Binding ControlPanelVisible}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="Auto"/>

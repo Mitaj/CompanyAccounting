@@ -29,10 +29,16 @@ namespace CompanyAccounting.View
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            if (!(DataContext is CompaniesViewModel companiesVM) || !(e.NewValue is ViewModelBase newValue))
+            if (!(DataContext is CompaniesViewModel companiesVM) || !(e.NewValue is BaseElementViewModel newValue))
                 return;
 
             companiesVM.SelectedItem = newValue;
+        }
+
+        private void TextBoxNumeric_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var updatedValue = ((TextBox)sender).Text + e.Text;
+            e.Handled = !uint.TryParse(updatedValue, out _);
         }
     }
 }

@@ -86,6 +86,74 @@ namespace CompanyAccounting.Model
             return company;
         }
 
+        public Department AddDepartment(string name, Company company)
+        { 
+            var department = new Department();
+            department.Name = name;
+            department.SupervisorID = -1;
+            department.CompanyID = company.ID;
+            company.Departments.Add(department);
+            try
+            {
+                var task = Task.Run(() => AddTableItemAsyncTask(this, department));
+                task.Wait();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+            return department;
+        }
+        public Employee AddEmployee(string firstName, string secondName, string lastName, DateTime birthday, Department department)
+        { 
+            var employee = new Employee();
+            employee.FirstName = firstName;
+            employee.SecondName = secondName;
+            employee.LastName = lastName;
+            employee.Birthday = birthday;
+
+            try
+            {
+                var task = Task.Run(() => AddTableItemAsyncTask(this, employee));
+                task.Wait();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+            return employee;
+        }
+
+
+
+        public void DeleteTableItem(BaseTableObject tableObject)
+        {
+            try
+            {
+                var task = Task.Run(() => DeleteTableItemAsyncTask(tableObject));
+                task.Wait();
+            }
+            catch (ArgumentNullException) { }
+            catch (AggregateException) { }
+            catch (ObjectDisposedException) { }
+        }
+
         public void SetConnectionString(string connectionString)
         {
             DataBaseAssistant.SetConnectionString(connectionString);
@@ -206,6 +274,15 @@ namespace CompanyAccounting.Model
                     assistant.Companies.Add(company);
                 }
                 return tableItem;
+            }
+        }
+
+        private static async Task DeleteTableItemAsyncTask(BaseTableObject tableItem)
+        {
+            using (var context = new DataBaseAssistant())
+            {
+                context.Entry(tableItem).State = EntityState.Deleted;
+                await context.SaveChangesAsync();
             }
         }
     }

@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace CompanyAccounting.ViewModel
 {
-    public class DepartmentViewModel : ViewModelBase
+    public class DepartmentViewModel : BaseElementViewModel
     {
-        public DepartmentViewModel(Company parent, Department department) 
+        public DepartmentViewModel(Company parent, Department department)
+            : base(department)
         {
             _department = department;
             Parent = parent;
@@ -46,6 +47,11 @@ namespace CompanyAccounting.ViewModel
                     _employees.Add(new EmployeeViewModel(_department, employee));
             }
             RaisePropertyChanged(() => Employees);
+        }
+
+        internal void Remove(EmployeeViewModel employee)
+        { 
+            Employees?.Remove(employee);
         }
 
         private void LoadIfNeedEmployees()

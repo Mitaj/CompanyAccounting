@@ -9,16 +9,15 @@ using System.Threading.Tasks;
 
 namespace CompanyAccounting.ViewModel
 {
-    public class CompanyViewModel : ViewModelBase
+    public class CompanyViewModel : BaseElementViewModel
     {
-        public CompanyViewModel(Company company)   
+        public CompanyViewModel(Company company)
+            : base(company)
         {
             _company = company;
             _departments = new ObservableCollection<DepartmentViewModel>();
             Init();
         }
-
-        public int ID => _company.ID;
 
         public string Name
         {
@@ -75,6 +74,11 @@ namespace CompanyAccounting.ViewModel
         }
 
         public ObservableCollection<DepartmentViewModel> Departments => _departments;
+
+        internal void Remove(DepartmentViewModel department)
+        { 
+          Departments?.Remove(department);
+        }
 
         private void Init()
         {
