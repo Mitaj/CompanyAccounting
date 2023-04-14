@@ -10,6 +10,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/CompanyAccounting.View;component/Styles.xaml" />
     </ResourceDictionary.MergedDictionaries>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     
     <DataTemplate DataType="{x:Type vmc:CompanyViewModel}">
         <StackPanel>
@@ -20,6 +21,15 @@
                     <TextBlock Text="{Binding Source={x:Static cas:Resources.CompanyName}, StringFormat='{}{0}:'}"
                                Style="{StaticResource PropertyLabelBlock}" />
                     <TextBox Text="{Binding Name}"
+                             Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
+                
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="Юридический адрес"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <TextBox Text="{Binding LegalAddress}"
+                             Width="800"
+                             ToolTip="{Binding LegalAddress}"
                              Style="{StaticResource ValueBlock}"/>
                 </StackPanel>
 
@@ -43,6 +53,16 @@
                                Style="{StaticResource PropertyLabelBlock}" />
                     <TextBox Text="{Binding Name}"
                              Style="{StaticResource ValueBlock}"/>
+                </StackPanel>
+
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="Руководитель:"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <ComboBox ItemsSource="{Binding Employees}" 
+                              SelectedValuePath="ID"
+                              DisplayMemberPath="Name"
+                              SelectedValue="{Binding SupervisorID}"
+                              Style="{StaticResource ComboValueBlock}"/>
                 </StackPanel>
 
             </StackPanel>
@@ -81,6 +101,38 @@
                     <DatePicker SelectedDate="{Binding Birthday}"
                                 Style="{StaticResource DateValueBlock}"/>
                 </StackPanel>
+
+                <GroupBox Header="Информация о должности">
+                    <StackPanel>
+                        <StackPanel IsEnabled="{Binding IsEnabledEditJob}">
+                            <StackPanel Style="{StaticResource LabelValuePanel}">
+                                <TextBlock Text="Должность:"
+                                       Style="{StaticResource PropertyLabelBlock}" />
+                                <TextBox Text="{Binding PositionName}"
+                                     Style="{StaticResource ValueBlock}"/>
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource LabelValuePanel}">
+                                <TextBlock Text="Заработная плата:"
+                                   Style="{StaticResource PropertyLabelBlock}" />
+                                <TextBox Text="{Binding SalarySumm}"
+                                     Style="{StaticResource ValueBlock}"
+                                     PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="{Binding IsEnabledEditJob, Converter={StaticResource BoolToVisibility}}">
+                            <Button Content="Отменить"
+                                    Command="{Binding CancelEditJobCommand}"
+                                    Margin="4"/>
+                            <Button Content="Применить"
+                                    Command="{Binding ApplyJobChangesCommand}"
+                                    Margin="4" />
+                        </StackPanel>
+                        <Button Content="Изменить"
+                                Visibility="{Binding IsDisabledEditJob, Converter={StaticResource BoolToVisibility}}"
+                                Command="{Binding StartChangeJobCommand}"/>
+                    </StackPanel>
+                </GroupBox>
 
             </StackPanel>
         </StackPanel>

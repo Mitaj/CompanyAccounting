@@ -1,4 +1,5 @@
 ﻿using CompanyAccounting.Model;
+using CompanyAccounting.ViewModel.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -19,6 +20,7 @@ namespace CompanyAccounting.ViewModel
         { 
             Title = title;
             _companies = new ObservableCollection<CompanyViewModel>();
+            _reportBuilder = new ReportBuilder();
             LoadCompanies();
             AddCompanyPanelVisible = false;
         }
@@ -48,7 +50,7 @@ namespace CompanyAccounting.ViewModel
         public void LoadCompanies()
         {
             _companies.Clear();
-            var loadedCompanyModels = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().Companies;
+            var loadedCompanyModels = Model.Companies;
             if (loadedCompanyModels == null || loadedCompanyModels.Count == 0)
             {
                 RaisePropertyChanged(nameof(Companies));
@@ -167,6 +169,26 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
+        public string AddPositionName
+        {
+            get => _addPositionName;
+            set
+            {
+                _addPositionName = value;
+                RaisePropertyChanged(nameof(AddPositionName));
+            }
+        }
+
+        public int AddSalarySumm
+        {
+            get => _addSalarySumm;
+            set
+            {
+                _addSalarySumm = value;
+                RaisePropertyChanged(nameof(AddSalarySumm));
+            }
+        }
+
 
         public ICommand AddCompanyCommand => _addCompanyCommand ?? (_addCompanyCommand = new RelayCommand(AddCompany));
         public ICommand ApplyAddCompanyCommand => _applyAddCompanyCommand ?? (_applyAddCompanyCommand = new RelayCommand(ApplyAddCompany, CanAddCompany));
@@ -177,6 +199,9 @@ namespace CompanyAccounting.ViewModel
         public ICommand ApplyAddEmployeeCommand => _applyAddEmployeeCommand ?? (_applyAddEmployeeCommand = new RelayCommand(ApplyAddEmployee, CanAddEmployee));
         public ICommand AddItemCommand => _addItemCommand ?? (_addItemCommand = new RelayCommand(AddItem, CanAddItem));
         public ICommand DeleteItemCommand => _deleteItemCommand ?? (_deleteItemCommand = new RelayCommand(DeleteItem, CanDeleteItem));
+
+        public ICommand BuildPayrollReportCommand => _reportBuilder.BuildPayrollReportCommand;
+        public ICommand BuildListOfEmployeesReportCommand => _reportBuilder.BuildListOfEmployeesReportCommand;
 
         private void AddCompany()
         {
@@ -192,7 +217,7 @@ namespace CompanyAccounting.ViewModel
 
         private void ApplyAddCompany()
         {
-            var addedCompany = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().AddCompany(AddCompanyName, AddCompanyDateCreation);
+            var addedCompany = Model.AddCompany(AddCompanyName, AddCompanyDateCreation);
             LoadCompany(addedCompany);
             RaisePropertyChanged(nameof(Companies));
             AddCompanyPanelVisible = false;
@@ -203,7 +228,7 @@ namespace CompanyAccounting.ViewModel
             if(!(SelectedItem is CompanyViewModel company))
                 return;
 
-            var addedDepartment = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().AddDepartment(AddDepartmentName, company.Base as Company);
+            var addedDepartment = Model.AddDepartment(AddDepartmentName, company.Base as Company);
             LoadDepartment(company, addedDepartment);
             RaisePropertyChanged(nameof(Companies));
             AddDepartmentPanelVisible = false;
@@ -216,19 +241,28 @@ namespace CompanyAccounting.ViewModel
 
         private void ApplyAddEmployee()
         {
-            if (!(SelectedItem is DepartmentViewModel department))
+            if (!(SelectedItem is DepartmentViewModel departmentVM) ||
+                !(departmentVM.Base is Department department))
                 return;
-
-            var addedEmployee = ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().AddEmployee(AddEmployeeFirstName, AddEmployeeSecondName, 
-                                                                                                        AddEmployeeLastName, AddEmployeeBirthday, department.Base as Department);
-            LoadEmployee(department, addedEmployee);
+            
+            var addedEmployee = Model.AddEmployee(AddEmployeeFirstName, AddEmployeeSecondName, 
+                                                  AddEmployeeLastName, AddEmployeeBirthday);
+            var jobInformation = Model.GetExistJobInformation(AddPositionName, AddSalarySumm);
+            if(jobInformation == null)
+                jobInformation = Model.AddJobInformation(AddPositionName, AddSalarySumm);
+            var addedWorkbookEntry = Model.AddWorkbookEntry(addedEmployee, DateTime.Now.Date, department, jobInformation);
+            if (addedWorkbookEntry == null)
+                return;
+            
+            LoadEmployee(departmentVM, addedEmployee);
             RaisePropertyChanged(nameof(Companies));
-            AddEmployeePanelVisible = false;
+            AddEmployeePanelVisible = false; 
         }
 
         private bool CanAddEmployee()
         {
-            return !string.IsNullOrWhiteSpace(AddEmployeeFirstName) && !string.IsNullOrWhiteSpace(AddEmployeeLastName);
+            return !string.IsNullOrWhiteSpace(AddEmployeeFirstName) && !string.IsNullOrWhiteSpace(AddEmployeeLastName) &&
+                   !string.IsNullOrWhiteSpace(AddPositionName) && AddSalarySumm > 0;
         }
 
         private void LoadCompany(Company company)
@@ -297,7 +331,7 @@ namespace CompanyAccounting.ViewModel
             if (SelectedItem == null)
                 return;
 
-            ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>().DeleteTableItem(SelectedItem.Base);
+            Model.DeleteTableItem(SelectedItem.Base);
             if (SelectedItem is CompanyViewModel company)
             {
                 Companies?.Remove(company);
@@ -325,9 +359,12 @@ namespace CompanyAccounting.ViewModel
             return SelectedItem != null;
         }
 
+        private ModelAssistant Model => ViewModelLocator.Instance.IoC.GetInstance<ModelAssistant>();
+
         private const string CompanyNameTemplate = "Компания {0}";
 
         private readonly ObservableCollection<CompanyViewModel> _companies;
+        private readonly ReportBuilder _reportBuilder;
 
         private string _title;
         private BaseElementViewModel _selectedItem;
@@ -339,6 +376,8 @@ namespace CompanyAccounting.ViewModel
         private string _addEmployeeFirstName;
         private string _addEmployeeSecondName;
         private string _addEmployeeLastName;
+        private string _addPositionName;
+        private int _addSalarySumm;
         private DateTime _addCompanyDateCreation;
         private DateTime _addEmployeeBirthday;
 

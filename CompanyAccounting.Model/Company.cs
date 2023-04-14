@@ -26,6 +26,18 @@ namespace CompanyAccounting.Model
             }
         }
 
+        public string LegalAddress
+        {
+            get => _legalAddress;
+            set
+            {
+                if (_legalAddress == value)
+                    return;
+                _legalAddress = value;
+                RaisePropertyChanged(nameof(LegalAddress));
+            }
+        }
+
         public DateTime DateCreation
         {
             get => _dateCreation;
@@ -51,6 +63,7 @@ namespace CompanyAccounting.Model
         }
 
         private string _name;
+        private string _legalAddress;
         private DateTime _dateCreation;
     }
 }

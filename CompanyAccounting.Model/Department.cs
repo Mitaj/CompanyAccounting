@@ -54,11 +54,19 @@ namespace CompanyAccounting.Model
 
         public ObservableCollection<WorkbookEntry> WorkbookEntries => _workbookEntries;
 
-        internal void SetWorkbookEntries(IEnumerable<WorkbookEntry> entries)
+        internal void AddWorkbookEntry(WorkbookEntry entry)
         {
-            _workbookEntries.Clear();
             if (_workbookEntries == null)
                 return;
+
+            _workbookEntries.Add(entry);
+            RaisePropertyChanged(nameof(WorkbookEntries));
+        }
+        internal void SetWorkbookEntries(IEnumerable<WorkbookEntry> entries)
+        {
+            if (_workbookEntries == null)
+                return;
+            _workbookEntries.Clear();
 
             foreach (var entry in entries)
                 _workbookEntries.Add(entry);

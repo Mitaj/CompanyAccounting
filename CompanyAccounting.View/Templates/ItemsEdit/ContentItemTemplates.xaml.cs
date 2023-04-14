@@ -24,5 +24,11 @@ namespace CompanyAccounting.View.Templates.ItemsEdit
         {
             InitializeComponent();
         }
+
+        private void TextBoxNumeric_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var updatedValue = ((TextBox)sender).Text + e.Text;
+            e.Handled = !uint.TryParse(updatedValue, out _);
+        }
     }
 }

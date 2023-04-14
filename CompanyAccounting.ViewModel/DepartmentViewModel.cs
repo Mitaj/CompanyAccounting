@@ -20,6 +20,19 @@ namespace CompanyAccounting.ViewModel
             _employees = new ObservableCollection<EmployeeViewModel>();
         }
 
+        public int SupervisorID
+        { 
+            get => _department.SupervisorID;
+            set
+            {
+                if (_department.SupervisorID == value)
+                    return;
+                _department.SupervisorID = value;
+                RaisePropertyChanged(nameof(SupervisorID));
+                RefreshEmployeeAttributes();
+            }
+        }
+
         public string Name
         {
             get => _department.Name;
@@ -29,7 +42,7 @@ namespace CompanyAccounting.ViewModel
                     return;
 
                 _department.Name = value;
-                RaisePropertyChanged("Name");
+                RaisePropertyChanged(nameof(Name));
             }
         }
 
@@ -52,6 +65,14 @@ namespace CompanyAccounting.ViewModel
         internal void Remove(EmployeeViewModel employee)
         { 
             Employees?.Remove(employee);
+        }
+
+        private void RefreshEmployeeAttributes()
+        {
+            if (Employees == null)
+                return;
+            foreach (var employee in Employees) 
+                employee.RefreshAttributes();
         }
 
         private void LoadIfNeedEmployees()

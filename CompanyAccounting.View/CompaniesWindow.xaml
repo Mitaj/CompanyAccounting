@@ -19,220 +19,245 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <GroupBox Grid.Row="0"
+        <TabControl>
+            <TabItem Header="Главная">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <GroupBox Grid.Row="0"
                   Header="Управление">
-            <StackPanel>
-                <StackPanel Visibility="{Binding ControlPanelVisible, Converter={StaticResource BoolToVisibility}}"
+                        <StackPanel>
+                            <StackPanel Visibility="{Binding ControlPanelVisible, Converter={StaticResource BoolToVisibility}}"
                             Orientation="Horizontal">
-                    <Button Content="Добавить компанию" 
+                                <Button Content="Добавить компанию" 
                             Command="{Binding AddCompanyCommand}"
                             Margin="6 4"/>
-                    <Button Content="Добавить" 
+                                <Button Content="Добавить" 
                             Command="{Binding AddItemCommand}"
                             Margin="6 4"/>
-                    <Button Content="Удалить"
+                                <Button Content="Удалить"
                             Command="{Binding DeleteItemCommand}"
                             Margin="0 4"/>
-                </StackPanel>
-                <StackPanel Visibility="{Binding AddCompanyPanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding AddCompanyPanelVisible, Converter={StaticResource BoolToVisibility}}"
                             Orientation="Horizontal">
-                    <Button Content="Отмена" 
+                                <Button Content="Отмена" 
                             Command="{Binding CancelAddCompanyCommand}"
                             Margin="6 4"/>
-                    <Button Content="Сохранить компанию" 
+                                <Button Content="Сохранить компанию" 
                             Command="{Binding ApplyAddCompanyCommand}"
                             Margin="6 4"/>
-                    <TextBlock Text="Название:"
+                                <TextBlock Text="Название:"
                                VerticalAlignment="Center"
                                Margin="2"/>
-                    <TextBox Text="{Binding AddCompanyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                <TextBox Text="{Binding AddCompanyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                              Width="200"
                              Margin="4"/>
-                    <TextBlock Text="Дата создания:"
+                                <TextBlock Text="Дата создания:"
                                VerticalAlignment="Center"
                                Margin="2"/>
-                    <DatePicker SelectedDate="{Binding AddCompanyDateCreation, Mode=TwoWay}"
+                                <DatePicker SelectedDate="{Binding AddCompanyDateCreation, Mode=TwoWay}"
                                 Width="200"
                                 Margin="2"/>
-                </StackPanel>
-                <StackPanel Visibility="{Binding AddDepartmentPanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding AddDepartmentPanelVisible, Converter={StaticResource BoolToVisibility}}"
                             Orientation="Horizontal">
-                    <Button Content="Отмена" 
+                                <Button Content="Отмена" 
                             Command="{Binding CancelAddDepartmentCommand}"
                             Margin="6 4"/>
-                    <Button Content="Сохранить подразделение" 
+                                <Button Content="Сохранить подразделение" 
                             Command="{Binding ApplyAddDepartmentCommand}"
                             Margin="6 4"/>
-                    <TextBlock Text="Название:"
+                                <TextBlock Text="Название:"
                                VerticalAlignment="Center"
                                Margin="2"/>
-                    <TextBox Text="{Binding AddDepartmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                <TextBox Text="{Binding AddDepartmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                              Width="200"
                              Margin="4"/>
-                </StackPanel>
-                
-                <StackPanel Visibility="{Binding AddEmployeePanelVisible, Converter={StaticResource BoolToVisibility}}"
+                            </StackPanel>
+
+                            <StackPanel Visibility="{Binding AddEmployeePanelVisible, Converter={StaticResource BoolToVisibility}}"
                             Orientation="Horizontal">
-                    <StackPanel Orientation="Horizontal"
+                                <StackPanel Orientation="Horizontal"
                                 Height="28">
-                        <Button Content="Отмена" 
+                                    <Button Content="Отмена" 
                                 Command="{Binding CancelAddEmployeeCommand}"
                                 Margin="6 4"/>
-                        <Button Content="Сохранить сотрудника" 
+                                    <Button Content="Сохранить сотрудника" 
                                 Command="{Binding ApplyAddEmployeeCommand}"
                                 Margin="6 4"/>
-                    </StackPanel>
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Source={x:Static cas:Resources.LastName}, StringFormat='{}{0}:'}"
+                                </StackPanel>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Source={x:Static cas:Resources.LastName}, StringFormat='{}{0}:'}"
                                        VerticalAlignment="Center"
                                        Margin="2"/>
-                            <TextBox Text="{Binding AddEmployeeLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                        <TextBox Text="{Binding AddEmployeeLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                      Width="200"
                                      Margin="4"/>
-                            <TextBlock Text="{Binding Source={x:Static cas:Resources.FirstName}, StringFormat='{}{0}:'}"
+                                        <TextBlock Text="{Binding Source={x:Static cas:Resources.FirstName}, StringFormat='{}{0}:'}"
                                        VerticalAlignment="Center"
                                        Margin="2"/>
-                            <TextBox Text="{Binding AddEmployeeFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                        <TextBox Text="{Binding AddEmployeeFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                      Width="200"
                                      Margin="4"/>
-                            <TextBlock Text="{Binding Source={x:Static cas:Resources.SecondName}, StringFormat='{}{0}:'}"
+                                        <TextBlock Text="{Binding Source={x:Static cas:Resources.SecondName}, StringFormat='{}{0}:'}"
                                        VerticalAlignment="Center"
                                        Margin="2"/>
-                            <TextBox Text="{Binding AddEmployeeSecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                        <TextBox Text="{Binding AddEmployeeSecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                      Width="200"
                                      Margin="4"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Дата рождения:"
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Дата рождения:"
                                        VerticalAlignment="Center"
                                        Margin="2"/>
-                            <DatePicker SelectedDate="{Binding AddEmployeeBirthday, Mode=TwoWay}"
+                                        <DatePicker SelectedDate="{Binding AddEmployeeBirthday, Mode=TwoWay}"
                                         Width="200"
                                         Margin="2"/>
-                            <TextBlock Text="Должность:"
+                                        <TextBlock Text="Должность:"
                                        VerticalAlignment="Center"
                                        Margin="2"/>
-                            <TextBox Text="{Binding AddPositionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                        <TextBox Text="{Binding AddPositionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                      Width="200"
                                      Margin="4"/>
-                            <TextBlock Text="Заработная плата:"
+                                        <TextBlock Text="Заработная плата:"
                                        VerticalAlignment="Center"
                                        Margin="2"/>
-                            <TextBox Text="{Binding AddSalarySumm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
+                                        <TextBox Text="{Binding AddSalarySumm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
                                      Width="200"
                                      Margin="4"
                                      PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
                         </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-            </StackPanel>
-        </GroupBox>
-        <Grid Grid.Row="1"
+                    </GroupBox>
+                    <Grid Grid.Row="1"
               VerticalAlignment="Stretch"
               IsEnabled="{Binding ControlPanelVisible}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <TreeView Grid.Column="0"
+                        <TreeView Grid.Column="0"
                   VerticalAlignment="Stretch"
                   ItemsSource="{Binding Companies}"
                   ItemContainerStyle="{StaticResource TreeViewMainItem}"
                   SelectedItemChanged="TreeView_SelectedItemChanged">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type vm:CompanyViewModel}" ItemsSource="{Binding Departments}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="32" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0"
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type vm:CompanyViewModel}" ItemsSource="{Binding Departments}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="32" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Grid.Column="0"
                                    Source="Images/company.png"
                                    Stretch="Fill"
                                    Height="28"
                                    Width="28"
                                    Margin="2"/>
-                            <TextBlock Grid.Column="1"
+                                        <TextBlock Grid.Column="1"
                                        Text="{Binding Name}"
                                        VerticalAlignment="Center"
                                        Margin="4 0 0 0"/>
-                        </Grid>
-                        <HierarchicalDataTemplate.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type vm:DepartmentViewModel}" ItemsSource="{Binding Employees}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="32" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Grid.Column="0"
+                                    </Grid>
+                                    <HierarchicalDataTemplate.ItemTemplate>
+                                        <HierarchicalDataTemplate DataType="{x:Type vm:DepartmentViewModel}" ItemsSource="{Binding Employees}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="32" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Grid.Column="0"
                                            Source="Images/department.png"
                                            Stretch="Fill"
                                            Height="28"
                                            Width="28"
                                            Margin="2"/>
-                                    <TextBlock Grid.Column="1"
+                                                <TextBlock Grid.Column="1"
                                                Text="{Binding Name}"
                                                VerticalAlignment="Center"
                                                Margin="4 0 0 0"/>
-                                </Grid>
-                                <HierarchicalDataTemplate.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="32" />
-                                                <ColumnDefinition Width="*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Image Grid.Column="0"
+                                            </Grid>
+                                            <HierarchicalDataTemplate.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="32" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Image Grid.Column="0"
                                                    Stretch="Fill"
                                                    Height="28"
                                                    Width="28"
                                                    Margin="2">
-                                                <Image.Style>
-                                                    <Style TargetType="{x:Type Image}">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsSupervisor}" Value="False">
-                                                                <Setter Property="Source" Value="Images/employee.png"/>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding IsSupervisor}" Value="True">
-                                                                <Setter Property="Source" Value="Images/supervisor.png"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                            </Image>
-                                            <TextBlock Grid.Column="1"
+                                                            <Image.Style>
+                                                                <Style TargetType="{x:Type Image}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsSupervisor}" Value="False">
+                                                                            <Setter Property="Source" Value="Images/employee.png"/>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsSupervisor}" Value="True">
+                                                                            <Setter Property="Source" Value="Images/supervisor.png"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Image.Style>
+                                                        </Image>
+                                                        <TextBlock Grid.Column="1"
                                                        Text="{Binding Name}"
                                                        VerticalAlignment="Center"
                                                        Margin="4 0 0 0"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </HierarchicalDataTemplate.ItemTemplate>
-                            </HierarchicalDataTemplate>
-                        </HierarchicalDataTemplate.ItemTemplate>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-            <GridSplitter Grid.Column="1"
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </HierarchicalDataTemplate.ItemTemplate>
+                                        </HierarchicalDataTemplate>
+                                    </HierarchicalDataTemplate.ItemTemplate>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                        </TreeView>
+                        <GridSplitter Grid.Column="1"
                       ShowsPreview="False" 
                       Width="3"
                       HorizontalAlignment="Center" 
                       VerticalAlignment="Stretch"/>
-            <ScrollViewer Grid.Column="2"
+                        <ScrollViewer Grid.Column="2"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Auto">
-                <StackPanel Margin="10"
+                            <StackPanel Margin="10"
                         Focusable="False">
-                    <ContentControl Content="{Binding SelectedItem}"
+                                <ContentControl Content="{Binding SelectedItem}"
                                 Focusable="False"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Ведомость по зарплате">
+                <StackPanel>
+                    <Button Content="Построить отчет"
+                            Command="{Binding BuildPayrollReportCommand}"
+                            Width="200"
+                            Margin="10"/>
                 </StackPanel>
-            </ScrollViewer>
-        </Grid>
+            </TabItem>
+            <TabItem Header="Список сотрудников">
+                <StackPanel>
+                    <GroupBox Header="Фильтр отчета">
+                        
+                    </GroupBox>
+                    <Button Content="Построить отчет"
+                            Command="{Binding BuildListOfEmployeesReportCommand}"
+                            Width="200"
+                            Margin="10"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

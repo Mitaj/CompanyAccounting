@@ -22,6 +22,7 @@ namespace CompanyAccounting.Model
         {
             Companies = new ObservableCollection<Company>();
             Employees = new ObservableCollection<Employee>();
+            JobInformations = new ObservableCollection<JobInformation>();
         }
 
         public void LoadCompanies()
@@ -64,7 +65,7 @@ namespace CompanyAccounting.Model
         public Company AddCompany(string name, DateTime dateCreation)
         {
             var company = new Company();
-            company.Name = name;
+            company.Name = name?.Trim();
             company.DateCreation = dateCreation;
             try
             {
@@ -88,8 +89,10 @@ namespace CompanyAccounting.Model
 
         public Department AddDepartment(string name, Company company)
         { 
+            if(company == null)
+                return null;
             var department = new Department();
-            department.Name = name;
+            department.Name = name?.Trim();
             department.SupervisorID = -1;
             department.CompanyID = company.ID;
             company.Departments.Add(department);
@@ -112,12 +115,12 @@ namespace CompanyAccounting.Model
             }
             return department;
         }
-        public Employee AddEmployee(string firstName, string secondName, string lastName, DateTime birthday, Department department)
+        public Employee AddEmployee(string firstName, string secondName, string lastName, DateTime birthday)
         { 
             var employee = new Employee();
-            employee.FirstName = firstName;
-            employee.SecondName = secondName;
-            employee.LastName = lastName;
+            employee.FirstName = firstName?.Trim();
+            employee.SecondName = secondName?.Trim();
+            employee.LastName = lastName?.Trim();
             employee.Birthday = birthday;
 
             try
@@ -140,6 +143,90 @@ namespace CompanyAccounting.Model
             return employee;
         }
 
+        public JobInformation GetJobInformation(int id)
+        {
+            return JobInformations?.FirstOrDefault(j => j.ID == id);
+        }
+
+        public JobInformation GetExistJobInformation(string positionName, int salary)
+        {
+            try
+            {
+                var task = Task.Run(() => GetExistJobInformationAsyncTask(positionName, salary));
+                task.Wait();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+            return null;
+        }
+        
+        public JobInformation AddJobInformation(string positionName, int salary) 
+        {
+            var jobInformation = new JobInformation();
+            jobInformation.PositionName = positionName;
+            jobInformation.SalaryDollars = salary;
+            JobInformations.Add(jobInformation);
+            try
+            {
+                var task = Task.Run(() => AddTableItemAsyncTask(this, jobInformation));
+                task.Wait();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+            return jobInformation;
+        }
+        
+        public WorkbookEntry AddWorkbookEntry(Employee employee, DateTime dateEmployment, Department department, JobInformation jobInformation)
+        {
+            if (employee == null || department == null || jobInformation == null)
+                return null;
+            var entry = new WorkbookEntry();
+            entry.DateEmployment = dateEmployment;
+            entry.EmployeeID = employee.ID;
+            entry.DepartmentID = department.ID;
+            entry.JobInformationID = jobInformation.ID;
+            department.AddWorkbookEntry(entry);
+
+            try
+            {
+                var task = Task.Run(() => AddTableItemAsyncTask(this, entry));
+                task.Wait();
+            }
+            catch (ArgumentNullException)
+            {
+                return null;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
+            catch (ObjectDisposedException)
+            {
+                return null;
+            }
+            return entry;
+        }
+
 
 
         public void DeleteTableItem(BaseTableObject tableObject)
@@ -159,8 +246,17 @@ namespace CompanyAccounting.Model
             DataBaseAssistant.SetConnectionString(connectionString);
         }
 
+
         public ObservableCollection<Company> Companies { get; private set; }
         public ObservableCollection<Employee> Employees { get; private set; }
+        public ObservableCollection<JobInformation> JobInformations { get; private set; }
+
+        public void UpdateData(BaseTableObject tableItem)
+        {
+            var task = Task.Run(() => SaveChangesAsyncTask(tableItem));
+            task.Wait();
+            RaisePropertyChanged(nameof(Companies));
+        }
 
         private void TableItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -168,13 +264,6 @@ namespace CompanyAccounting.Model
                 return;
 
             UpdateData(tableObject);
-        }
-
-        private void UpdateData(BaseTableObject tableItem)
-        {
-            var task = Task.Run(() => SaveChangesAsyncTask(tableItem));
-            task.Wait();
-            RaisePropertyChanged(nameof(Companies));
         }
 
         private static async Task LoadCompaniesAsyncTask(ModelAssistant assistant)
@@ -248,7 +337,15 @@ namespace CompanyAccounting.Model
                     assistant.Employees.Add(employee);
                 }
 
-                await context.JobInformations.LoadAsync();
+                if (assistant.JobInformations != null && assistant.JobInformations.Count != 0)
+                    return;
+
+                var loadedJobInformations = await context.JobInformations.ToListAsync();
+                if (loadedJobInformations == null)
+                    return;
+
+                foreach (var info in loadedJobInformations)
+                    assistant.JobInformations.Add(info);
             }
         }
 
@@ -259,6 +356,14 @@ namespace CompanyAccounting.Model
                 context.Entry(tableItem).State = EntityState.Modified;
                 await context.SaveChangesAsync();
                 return tableItem;
+            }
+        }
+
+        private static async Task<JobInformation> GetExistJobInformationAsyncTask(string positionName, int salary)
+        { 
+            using(var context = new DataBaseAssistant()) 
+            {
+                return await context.JobInformations.FirstOrDefaultAsync(i => i.SalaryDollars == salary && i.PositionName.ToUpper() == positionName.Trim().ToUpper());
             }
         }
 

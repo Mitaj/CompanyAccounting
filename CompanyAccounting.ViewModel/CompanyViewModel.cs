@@ -32,6 +32,20 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
+        public string LegalAddress
+        {
+            get => _company.LegalAddress;
+            set
+            {
+                if (_company.LegalAddress == value)
+                    return;
+
+                _company.LegalAddress = value;
+                RaisePropertyChanged(nameof(LegalAddress));
+            }
+        }
+
+
         public DateTime DateCreation
         { 
             get => _company.DateCreation;
