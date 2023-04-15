@@ -27,117 +27,117 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0"
-                  Header="Управление">
+                              Header="Управление">
                         <StackPanel>
                             <StackPanel Visibility="{Binding ControlPanelVisible, Converter={StaticResource BoolToVisibility}}"
-                            Orientation="Horizontal">
+                                        Orientation="Horizontal">
                                 <Button Content="Добавить компанию" 
-                            Command="{Binding AddCompanyCommand}"
-                            Margin="6 4"/>
+                                        Command="{Binding AddCompanyCommand}"
+                                        Margin="6 4"/>
                                 <Button Content="Добавить" 
-                            Command="{Binding AddItemCommand}"
-                            Margin="6 4"/>
+                                        Command="{Binding AddItemCommand}"
+                                        Margin="6 4"/>
                                 <Button Content="Удалить"
-                            Command="{Binding DeleteItemCommand}"
-                            Margin="0 4"/>
+                                        Command="{Binding DeleteItemCommand}"
+                                        Margin="0 4"/>
                             </StackPanel>
                             <StackPanel Visibility="{Binding AddCompanyPanelVisible, Converter={StaticResource BoolToVisibility}}"
-                            Orientation="Horizontal">
+                                        Orientation="Horizontal">
                                 <Button Content="Отмена" 
-                            Command="{Binding CancelAddCompanyCommand}"
-                            Margin="6 4"/>
+                                        Command="{Binding CancelAddCompanyCommand}"
+                                        Margin="6 4"/>
                                 <Button Content="Сохранить компанию" 
-                            Command="{Binding ApplyAddCompanyCommand}"
-                            Margin="6 4"/>
+                                        Command="{Binding ApplyAddCompanyCommand}"
+                                        Margin="6 4"/>
                                 <TextBlock Text="Название:"
-                               VerticalAlignment="Center"
-                               Margin="2"/>
+                                           VerticalAlignment="Center"
+                                           Margin="2"/>
                                 <TextBox Text="{Binding AddCompanyName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                             Width="200"
-                             Margin="4"/>
+                                         Width="200"
+                                         Margin="4"/>
                                 <TextBlock Text="Дата создания:"
-                               VerticalAlignment="Center"
-                               Margin="2"/>
+                                           VerticalAlignment="Center"
+                                           Margin="2"/>
                                 <DatePicker SelectedDate="{Binding AddCompanyDateCreation, Mode=TwoWay}"
-                                Width="200"
-                                Margin="2"/>
+                                            Width="200"
+                                            Margin="2"/>
                             </StackPanel>
                             <StackPanel Visibility="{Binding AddDepartmentPanelVisible, Converter={StaticResource BoolToVisibility}}"
-                            Orientation="Horizontal">
+                                        Orientation="Horizontal">
                                 <Button Content="Отмена" 
-                            Command="{Binding CancelAddDepartmentCommand}"
-                            Margin="6 4"/>
+                                        Command="{Binding CancelAddDepartmentCommand}"
+                                        Margin="6 4"/>
                                 <Button Content="Сохранить подразделение" 
-                            Command="{Binding ApplyAddDepartmentCommand}"
-                            Margin="6 4"/>
+                                        Command="{Binding ApplyAddDepartmentCommand}"
+                                        Margin="6 4"/>
                                 <TextBlock Text="Название:"
-                               VerticalAlignment="Center"
-                               Margin="2"/>
+                                           VerticalAlignment="Center"
+                                           Margin="2"/>
                                 <TextBox Text="{Binding AddDepartmentName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                             Width="200"
-                             Margin="4"/>
+                                         Width="200"
+                                         Margin="4"/>
                             </StackPanel>
 
                             <StackPanel Visibility="{Binding AddEmployeePanelVisible, Converter={StaticResource BoolToVisibility}}"
-                            Orientation="Horizontal">
+                                        Orientation="Horizontal">
                                 <StackPanel Orientation="Horizontal"
-                                Height="28">
+                                            Height="28">
                                     <Button Content="Отмена" 
-                                Command="{Binding CancelAddEmployeeCommand}"
-                                Margin="6 4"/>
+                                            Command="{Binding CancelAddEmployeeCommand}"
+                                            Margin="6 4"/>
                                     <Button Content="Сохранить сотрудника" 
-                                Command="{Binding ApplyAddEmployeeCommand}"
-                                Margin="6 4"/>
+                                            Command="{Binding ApplyAddEmployeeCommand}"
+                                            Margin="6 4"/>
                                 </StackPanel>
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Source={x:Static cas:Resources.LastName}, StringFormat='{}{0}:'}"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                                                   VerticalAlignment="Center"
+                                                   Margin="2"/>
                                         <TextBox Text="{Binding AddEmployeeLastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                     Width="200"
-                                     Margin="4"/>
+                                                 Width="200"
+                                                 Margin="4"/>
                                         <TextBlock Text="{Binding Source={x:Static cas:Resources.FirstName}, StringFormat='{}{0}:'}"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                                                   VerticalAlignment="Center"
+                                                   Margin="2"/>
                                         <TextBox Text="{Binding AddEmployeeFirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                     Width="200"
-                                     Margin="4"/>
+                                                 Width="200"
+                                                 Margin="4"/>
                                         <TextBlock Text="{Binding Source={x:Static cas:Resources.SecondName}, StringFormat='{}{0}:'}"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                                                   VerticalAlignment="Center"
+                                                   Margin="2"/>
                                         <TextBox Text="{Binding AddEmployeeSecondName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                     Width="200"
-                                     Margin="4"/>
+                                                 Width="200"
+                                                 Margin="4"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Дата рождения:"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                                                   VerticalAlignment="Center"
+                                                   Margin="2"/>
                                         <DatePicker SelectedDate="{Binding AddEmployeeBirthday, Mode=TwoWay}"
-                                        Width="200"
-                                        Margin="2"/>
+                                                    Width="200"
+                                                    Margin="2"/>
                                         <TextBlock Text="Должность:"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                                                   VerticalAlignment="Center"
+                                                   Margin="2"/>
                                         <TextBox Text="{Binding AddPositionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                     Width="200"
-                                     Margin="4"/>
+                                                 Width="200"
+                                                 Margin="4"/>
                                         <TextBlock Text="Заработная плата:"
-                                       VerticalAlignment="Center"
-                                       Margin="2"/>
+                                                   VerticalAlignment="Center"
+                                                   Margin="2"/>
                                         <TextBox Text="{Binding AddSalarySumm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  
-                                     Width="200"
-                                     Margin="4"
-                                     PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
+                                                 Width="200"
+                                                 Margin="4"
+                                                 PreviewTextInput="TextBoxNumeric_PreviewTextInput"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
                     <Grid Grid.Row="1"
-              VerticalAlignment="Stretch"
-              IsEnabled="{Binding ControlPanelVisible}">
+                          VerticalAlignment="Stretch"
+                          IsEnabled="{Binding ControlPanelVisible}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition Width="Auto"/>
@@ -145,10 +145,10 @@
                         </Grid.ColumnDefinitions>
 
                         <TreeView Grid.Column="0"
-                  VerticalAlignment="Stretch"
-                  ItemsSource="{Binding Companies}"
-                  ItemContainerStyle="{StaticResource TreeViewMainItem}"
-                  SelectedItemChanged="TreeView_SelectedItemChanged">
+                                  VerticalAlignment="Stretch"
+                                  ItemsSource="{Binding Companies}"
+                                  ItemContainerStyle="{StaticResource TreeViewMainItem}"
+                                  SelectedItemChanged="TreeView_SelectedItemChanged">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate DataType="{x:Type vm:CompanyViewModel}" ItemsSource="{Binding Departments}">
                                     <Grid>
@@ -157,15 +157,15 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Image Grid.Column="0"
-                                   Source="Images/company.png"
-                                   Stretch="Fill"
-                                   Height="28"
-                                   Width="28"
-                                   Margin="2"/>
+                                               Source="Images/company.png"
+                                               Stretch="Fill"
+                                               Height="28"
+                                               Width="28"
+                                               Margin="2"/>
                                         <TextBlock Grid.Column="1"
-                                       Text="{Binding Name}"
-                                       VerticalAlignment="Center"
-                                       Margin="4 0 0 0"/>
+                                                   Text="{Binding Name}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="4 0 0 0"/>
                                     </Grid>
                                     <HierarchicalDataTemplate.ItemTemplate>
                                         <HierarchicalDataTemplate DataType="{x:Type vm:DepartmentViewModel}" ItemsSource="{Binding Employees}">
@@ -175,15 +175,15 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Image Grid.Column="0"
-                                           Source="Images/department.png"
-                                           Stretch="Fill"
-                                           Height="28"
-                                           Width="28"
-                                           Margin="2"/>
+                                                       Source="Images/department.png"
+                                                       Stretch="Fill"
+                                                       Height="28"
+                                                       Width="28"
+                                                       Margin="2"/>
                                                 <TextBlock Grid.Column="1"
-                                               Text="{Binding Name}"
-                                               VerticalAlignment="Center"
-                                               Margin="4 0 0 0"/>
+                                                           Text="{Binding Name}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="4 0 0 0"/>
                                             </Grid>
                                             <HierarchicalDataTemplate.ItemTemplate>
                                                 <DataTemplate DataType="{x:Type vm:EmployeeViewModel}">
@@ -193,10 +193,10 @@
                                                             <ColumnDefinition Width="*" />
                                                         </Grid.ColumnDefinitions>
                                                         <Image Grid.Column="0"
-                                                   Stretch="Fill"
-                                                   Height="28"
-                                                   Width="28"
-                                                   Margin="2">
+                                                               Stretch="Fill"
+                                                               Height="28"
+                                                               Width="28"
+                                                               Margin="2">
                                                             <Image.Style>
                                                                 <Style TargetType="{x:Type Image}">
                                                                     <Style.Triggers>
@@ -211,9 +211,9 @@
                                                             </Image.Style>
                                                         </Image>
                                                         <TextBlock Grid.Column="1"
-                                                       Text="{Binding Name}"
-                                                       VerticalAlignment="Center"
-                                                       Margin="4 0 0 0"/>
+                                                                   Text="{Binding Name}"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="4 0 0 0"/>
                                                     </Grid>
                                                 </DataTemplate>
                                             </HierarchicalDataTemplate.ItemTemplate>
@@ -223,17 +223,17 @@
                             </TreeView.ItemTemplate>
                         </TreeView>
                         <GridSplitter Grid.Column="1"
-                      ShowsPreview="False" 
-                      Width="3"
-                      HorizontalAlignment="Center" 
-                      VerticalAlignment="Stretch"/>
+                                      ShowsPreview="False" 
+                                      Width="3"
+                                      HorizontalAlignment="Center" 
+                                      VerticalAlignment="Stretch"/>
                         <ScrollViewer Grid.Column="2"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Auto">
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Auto">
                             <StackPanel Margin="10"
-                        Focusable="False">
+                                        Focusable="False">
                                 <ContentControl Content="{Binding SelectedItem}"
-                                Focusable="False"/>
+                                                Focusable="False"/>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>
@@ -256,6 +256,34 @@
                             Command="{Binding BuildListOfEmployeesReportCommand}"
                             Width="200"
                             Margin="10"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Подключение">
+                <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
+                    <GroupBox Header="Строка подключения">
+                        <StackPanel Margin="6">
+                            <TextBox Text="{Binding ConnectionString}"
+                                     ToolTip="{Binding ConnectionString}"
+                                     Style="{StaticResource ValueBlock}"
+                                     IsEnabled="{Binding IsEnabledConnectionDataEditing}"
+                                     Width="600"/>
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Изменить"
+                                    Visibility="{Binding IsDisabledConnectionDataEditing, Converter={StaticResource BoolToVisibility}}"
+                                    Command="{Binding StartEditConnectionDataCommand}"
+                                    Margin="4"/>
+                            <Button Content="Отмена"
+                                    Visibility="{Binding IsEnabledConnectionDataEditing, Converter={StaticResource BoolToVisibility}}"
+                                    Command="{Binding CancelEditConnectionDataCommand}"
+                                    Margin="4"/>
+                            <Button Content="Применить"
+                                    Visibility="{Binding IsEnabledConnectionDataEditing, Converter={StaticResource BoolToVisibility}}"
+                                    Command="{Binding ApplyConnectionDataCommand}"
+                                    Margin="4"/>
+                        </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </TabItem>
         </TabControl>

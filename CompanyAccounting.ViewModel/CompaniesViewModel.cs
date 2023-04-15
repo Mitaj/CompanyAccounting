@@ -1,4 +1,5 @@
 ﻿using CompanyAccounting.Model;
+using CompanyAccounting.Model.RegistryData;
 using CompanyAccounting.ViewModel.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -64,6 +65,34 @@ namespace CompanyAccounting.ViewModel
         }
 
         public ObservableCollection<CompanyViewModel> Companies => _companies;
+
+        public bool IsDisabledConnectionDataEditing => !IsEnabledConnectionDataEditing;
+
+        public bool IsEnabledConnectionDataEditing
+        {
+            get => _isEnabledConnectionDataEditing;
+            set 
+            {
+                if (_isEnabledConnectionDataEditing == value)
+                    return;
+                _isEnabledConnectionDataEditing = value;
+                RaisePropertyChanged(nameof(IsEnabledConnectionDataEditing));
+                RaisePropertyChanged(nameof(IsDisabledConnectionDataEditing));
+                RaisePropertyChanged(nameof(ConnectionString));
+            }
+        }
+
+        public string ConnectionString
+        {
+            get => _isEnabledConnectionDataEditing ? _connectionString : Model.GetConnectionString();
+            set 
+            {
+                if (_connectionString == value)
+                    return;
+                _connectionString = value;
+                RaisePropertyChanged(nameof(ConnectionString));
+            }
+        }
 
         public bool ControlPanelVisible => !AddCompanyPanelVisible && !AddDepartmentPanelVisible && !AddEmployeePanelVisible;
         public bool AddCompanyPanelVisible 
@@ -200,8 +229,43 @@ namespace CompanyAccounting.ViewModel
         public ICommand AddItemCommand => _addItemCommand ?? (_addItemCommand = new RelayCommand(AddItem, CanAddItem));
         public ICommand DeleteItemCommand => _deleteItemCommand ?? (_deleteItemCommand = new RelayCommand(DeleteItem, CanDeleteItem));
 
-        public ICommand BuildPayrollReportCommand => _reportBuilder.BuildPayrollReportCommand;
+        public ICommand BuildPayrollReportCommand => _buildPayrollReportCommand ?? (_buildPayrollReportCommand = new RelayCommand(BuildPayrollReport));
         public ICommand BuildListOfEmployeesReportCommand => _reportBuilder.BuildListOfEmployeesReportCommand;
+
+        public ICommand StartEditConnectionDataCommand => _startEditConnectionDataCommand ?? (_startEditConnectionDataCommand = new RelayCommand(StartEditConnectionData));
+        public ICommand CancelEditConnectionDataCommand => _cancelEditConnectionDataCommand ?? (_cancelEditConnectionDataCommand = new RelayCommand(CancelEditConnectionData));
+        public ICommand ApplyConnectionDataCommand => _applyConnectionDataCommand ?? (_applyConnectionDataCommand = new RelayCommand(ApplyConnectionData));
+
+        private void StartEditConnectionData()
+        { 
+            ConnectionString = Model.GetConnectionString();
+            IsEnabledConnectionDataEditing = true;    
+        }
+
+        private void CancelEditConnectionData()
+        {
+            IsEnabledConnectionDataEditing = false;
+        }
+
+        private void ApplyConnectionData()
+        { 
+            Model.SetConnectionString(ConnectionString);
+            IsEnabledConnectionDataEditing = false;
+            RegistryAssistance.SetRegistryParamValue(RegistryParam.ConnectionString, ConnectionString);
+            Model.LoadCompanies();
+            Model.LoadDepartments();
+            LoadCompanies();      
+        }
+
+        private void BuildPayrollReport()
+        {
+            if (_reportBuilder?.BuildPayrollReportCommand == null)
+                return;
+            foreach (var company in Companies)
+                company.IsSelected = !company.IsSelected;
+            if(_reportBuilder.BuildPayrollReportCommand.CanExecute(null))
+                _reportBuilder.BuildPayrollReportCommand.Execute(null);
+        }
 
         private void AddCompany()
         {
@@ -368,6 +432,7 @@ namespace CompanyAccounting.ViewModel
 
         private string _title;
         private BaseElementViewModel _selectedItem;
+        private bool _isEnabledConnectionDataEditing;
         private bool _addCompanyPanelVisible;
         private bool _addDepartmentPanelVisible;
         private bool _addEmployeePanelVisible;
@@ -391,5 +456,13 @@ namespace CompanyAccounting.ViewModel
 
         private ICommand _addItemCommand;
         private ICommand _deleteItemCommand;
+
+        private ICommand _buildPayrollReportCommand;
+        private ICommand _buildListOfEmployeesReportCommand;
+
+        private ICommand _startEditConnectionDataCommand;
+        private ICommand _cancelEditConnectionDataCommand;
+        private ICommand _applyConnectionDataCommand;
+        private string _connectionString;
     }
 }

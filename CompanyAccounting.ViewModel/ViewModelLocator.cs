@@ -41,8 +41,6 @@ namespace CompanyAccounting.ViewModel
         {
             var modelAssistance = new ModelAssistant();
             var savedConnectionString = RegistryAssistance.GetRegistryParamValue(RegistryParam.ConnectionString);
-            RegistryAssistance.SetRegistryParamValue(RegistryParam.ConnectionString, TestConnectionString);
-            savedConnectionString = RegistryAssistance.GetRegistryParamValue(RegistryParam.ConnectionString);
             modelAssistance.SetConnectionString(savedConnectionString);
             IoC.Register(() => modelAssistance);
             IoC.Register(() => new CompaniesViewModel(productName));

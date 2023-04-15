@@ -27,8 +27,14 @@ namespace CompanyAccounting.Model
 
         public void LoadCompanies()
         {
-            var loadCompaniesTask = Task.Run(() => LoadCompaniesAsyncTask(this));
-            loadCompaniesTask.Wait();
+            Companies.Clear();
+            try
+            {
+                var loadCompaniesTask = Task.Run(() => LoadCompaniesAsyncTask(this));
+                loadCompaniesTask.Wait();
+            }
+            catch (ObjectDisposedException) { }
+            catch (AggregateException) { }
             RaisePropertyChanged(nameof(Companies));
         }
 
@@ -244,6 +250,11 @@ namespace CompanyAccounting.Model
         public void SetConnectionString(string connectionString)
         {
             DataBaseAssistant.SetConnectionString(connectionString);
+        }
+
+        public string GetConnectionString()
+        {
+            return DataBaseAssistant.ConnectionString;
         }
 
 
