@@ -250,7 +250,62 @@
             <TabItem Header="Список сотрудников">
                 <StackPanel>
                     <GroupBox Header="Фильтр отчета">
-                        
+                        <StackPanel Style="{StaticResource ObjectPropertiesBlock}">
+                            <StackPanel Style="{StaticResource LabelValuePanel}">
+                                <TextBlock Text="Компания:"
+                                           Style="{StaticResource PropertyLabelBlock}" />
+                                <ComboBox ItemsSource="{Binding Companies}"
+                                          SelectedValue="{Binding FilterCompanyIDReport}"
+                                          DisplayMemberPath="Name"
+                                          SelectedValuePath="ID"
+                                          Style="{StaticResource ComboValueBlock}"/>
+                            </StackPanel>
+                            
+                            <StackPanel Style="{StaticResource LabelValuePanel}">
+                                <TextBlock Text="Стаж, лет:"
+                                           Style="{StaticResource PropertyLabelBlock}" />
+                                <ComboBox ItemsSource="{Binding ExperienceYears}"
+                                          SelectedValue="{Binding FilterExperienceInYear}"
+                                          Style="{StaticResource ComboValueBlock}"/>
+                            </StackPanel>
+
+                            <GroupBox Header="Ограничения по возрасту">
+                                <StackPanel>
+                                    <StackPanel Style="{StaticResource LabelValuePanel}">
+                                        <TextBlock Text="Тип:"
+                                                   Style="{StaticResource PropertyLabelBlock}" />
+                                        <RadioButton GroupName="TypeFilterAge" 
+                                                     IsChecked="{Binding IsFilterTypeAge}"
+                                                     Content="Возраст"
+                                                     Margin="4"/>
+                                        <RadioButton GroupName="TypeFilterAge" 
+                                                     IsChecked="{Binding IsFilterTypeYearOfBirth}"
+                                                     Content="Год рождения"
+                                                     Margin="4"/>
+                                    </StackPanel>
+
+                                    <StackPanel Visibility="{Binding IsFilterTypeAge, Converter={StaticResource BoolToVisibility}}"
+                                                Style="{StaticResource LabelValuePanel}">
+                                        <TextBlock Text="Возраст:"
+                                                   Style="{StaticResource PropertyLabelBlock}" />
+                                        <ComboBox ItemsSource="{Binding Ages}"
+                                                  SelectedValue="{Binding FilterAge}"
+                                                  Style="{StaticResource ComboValueBlock}"/>
+                                    </StackPanel>
+
+                                    <StackPanel Visibility="{Binding IsFilterTypeYearOfBirth, Converter={StaticResource BoolToVisibility}}"
+                                                Style="{StaticResource LabelValuePanel}">
+                                        <TextBlock Text="Год рождения:"
+                                                   Style="{StaticResource PropertyLabelBlock}" />
+                                        <ComboBox ItemsSource="{Binding Ages}"
+                                                  SelectedValue="{Binding FilterYearOfBirth}"
+                                                  Style="{StaticResource ComboValueBlock}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </GroupBox>
+                            
+                            
+                        </StackPanel>
                     </GroupBox>
                     <Button Content="Построить отчет"
                             Command="{Binding BuildListOfEmployeesReportCommand}"

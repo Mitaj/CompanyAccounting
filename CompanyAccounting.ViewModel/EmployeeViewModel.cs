@@ -75,6 +75,19 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
+        public DateTime DateEmployment
+        {
+            get => WorkbookEntry.DateEmployment;
+            set
+            {
+                if (WorkbookEntry.DateEmployment == value)
+                    return;
+
+                WorkbookEntry.DateEmployment = value;
+                RaisePropertyChanged(nameof(DateEmployment));
+            }
+        }
+
         public bool IsSupervisor => Parent != null && Parent.SupervisorID == _employee.ID;
 
         public string Name => $"{_employee.FirstName} {_employee.LastName} {_employee.SecondName}";

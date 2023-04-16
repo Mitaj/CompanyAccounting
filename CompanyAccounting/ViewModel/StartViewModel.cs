@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using ResourceStrings = CompanyAccounting.Strings.Properties.Resources;
 
 namespace CompanyAccounting
@@ -113,6 +115,7 @@ namespace CompanyAccounting
             viewCompanies.DataContext = viewModel;
             viewCompanies.Closed += CompaniesView_Closed;
             viewCompanies.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            viewCompanies.Icon = BitmapFrame.Create(Application.GetResourceStream(new Uri("CompanyAccounting.ico", UriKind.RelativeOrAbsolute)).Stream);
             return viewCompanies;
         }
 

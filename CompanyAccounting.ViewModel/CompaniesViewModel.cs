@@ -24,6 +24,20 @@ namespace CompanyAccounting.ViewModel
             _reportBuilder = new ReportBuilder();
             LoadCompanies();
             AddCompanyPanelVisible = false;
+            _experienceYears = new HashSet<byte>();
+            _ages = new HashSet<byte>();
+            _yearsOfBirth = new HashSet<ushort>();
+            for (byte i = 0; i <= CountExperienceYears; i++)
+                _experienceYears.Add(i);
+            for(byte i = StartWorkAge; i <= EndWorkAge; i++)
+                _ages.Add(i);
+            var todayYear = DateTime.Now.Year;
+            var startYearBirthEmployee = (ushort)(todayYear - EndWorkAge);
+            var endYearBirthEmployee = (ushort)(todayYear - StartWorkAge);
+            for(var i = startYearBirthEmployee; i <= endYearBirthEmployee; i++)
+                _yearsOfBirth.Add(i);
+            IsFilterTypeAge = true;
+            IsFilterTypeYearOfBirth = false;
         }
 
         public string Title
@@ -218,6 +232,66 @@ namespace CompanyAccounting.ViewModel
             }
         }
 
+        public int FilterCompanyIDReport
+        {
+            get => _filterCompanyIDReport;
+            set 
+            {
+                _filterCompanyIDReport = value;
+                RaisePropertyChanged(nameof(FilterCompanyIDReport));
+            }
+        }
+
+        public byte FilterExperienceInYear
+        {
+            get => _filterExperienceInYear;
+            set 
+            {
+                _filterExperienceInYear = value;
+                RaisePropertyChanged(nameof(FilterExperienceInYear));
+            }
+        }
+
+        public byte FilterAge
+        {
+            get => _filterAge;
+            set 
+            {
+                _filterAge = value;
+                RaisePropertyChanged(nameof(FilterAge));
+            }
+        }
+        public ushort FilterYearOfBirth
+        {
+            get => _filterYearOfBirth;
+            set 
+            {
+                _filterYearOfBirth = value;
+                RaisePropertyChanged(nameof(FilterYearOfBirth));
+            }
+        }
+
+        public bool IsFilterTypeAge
+        {
+            get => _isFilterTypeAge;
+            set
+            {
+                _isFilterTypeAge = value;
+                RaisePropertyChanged(nameof(IsFilterTypeAge));
+                RaisePropertyChanged(nameof(IsFilterTypeYearOfBirth));
+            }
+        }
+
+        public bool IsFilterTypeYearOfBirth
+        {
+            get => _isFilterTypeYearOfBirth;
+            set
+            {
+                _isFilterTypeYearOfBirth = value;
+                RaisePropertyChanged(nameof(IsFilterTypeYearOfBirth));
+            }
+        }
+
 
         public ICommand AddCompanyCommand => _addCompanyCommand ?? (_addCompanyCommand = new RelayCommand(AddCompany));
         public ICommand ApplyAddCompanyCommand => _applyAddCompanyCommand ?? (_applyAddCompanyCommand = new RelayCommand(ApplyAddCompany, CanAddCompany));
@@ -230,11 +304,15 @@ namespace CompanyAccounting.ViewModel
         public ICommand DeleteItemCommand => _deleteItemCommand ?? (_deleteItemCommand = new RelayCommand(DeleteItem, CanDeleteItem));
 
         public ICommand BuildPayrollReportCommand => _buildPayrollReportCommand ?? (_buildPayrollReportCommand = new RelayCommand(BuildPayrollReport));
-        public ICommand BuildListOfEmployeesReportCommand => _reportBuilder.BuildListOfEmployeesReportCommand;
+        public ICommand BuildListOfEmployeesReportCommand => _buildListOfEmployeesReportCommand ?? (_buildListOfEmployeesReportCommand = new RelayCommand(BuildListOfEmployeesReport));
 
         public ICommand StartEditConnectionDataCommand => _startEditConnectionDataCommand ?? (_startEditConnectionDataCommand = new RelayCommand(StartEditConnectionData));
         public ICommand CancelEditConnectionDataCommand => _cancelEditConnectionDataCommand ?? (_cancelEditConnectionDataCommand = new RelayCommand(CancelEditConnectionData));
         public ICommand ApplyConnectionDataCommand => _applyConnectionDataCommand ?? (_applyConnectionDataCommand = new RelayCommand(ApplyConnectionData));
+
+        public HashSet<byte> ExperienceYears => _experienceYears;
+        public HashSet<byte> Ages => _ages;
+        public HashSet<ushort> YearsOfBirth => _yearsOfBirth;
 
         private void StartEditConnectionData()
         { 
@@ -265,6 +343,31 @@ namespace CompanyAccounting.ViewModel
                 company.IsSelected = !company.IsSelected;
             if(_reportBuilder.BuildPayrollReportCommand.CanExecute(null))
                 _reportBuilder.BuildPayrollReportCommand.Execute(null);
+        }
+
+        private void BuildListOfEmployeesReport()
+        {
+            if (_reportBuilder?.BuildListOfEmployeesReportCommand == null)
+                    return;
+            foreach (var company in Companies)
+            {
+                if (company.ID != FilterCompanyIDReport)
+                    continue;
+                company.IsSelected = !company.IsSelected;
+            }
+
+            var filter = new FilterListOfEmployees()
+            {
+                CompanyID = FilterCompanyIDReport,
+                ExperienceInYears = FilterExperienceInYear,
+                UseAgeType = IsFilterTypeAge,
+                Age = FilterAge,
+                YearOfBirth = FilterYearOfBirth,
+                RequestDate = DateTime.Now,
+            };
+
+            if (_reportBuilder.BuildListOfEmployeesReportCommand.CanExecute(null))
+                _reportBuilder.BuildListOfEmployeesReportCommand.Execute(filter);
         }
 
         private void AddCompany()
@@ -445,7 +548,6 @@ namespace CompanyAccounting.ViewModel
         private int _addSalarySumm;
         private DateTime _addCompanyDateCreation;
         private DateTime _addEmployeeBirthday;
-
         private ICommand _addCompanyCommand;
         private ICommand _applyAddCompanyCommand;
         private ICommand _applyAddDepartmentCommand;
@@ -453,16 +555,29 @@ namespace CompanyAccounting.ViewModel
         private ICommand _cancelAddCompanyCommand;
         private ICommand _cancelAddDepartmentCommand;
         private ICommand _cancelAddEmployeeCommand;
-
         private ICommand _addItemCommand;
         private ICommand _deleteItemCommand;
-
-        private ICommand _buildPayrollReportCommand;
-        private ICommand _buildListOfEmployeesReportCommand;
-
         private ICommand _startEditConnectionDataCommand;
         private ICommand _cancelEditConnectionDataCommand;
         private ICommand _applyConnectionDataCommand;
         private string _connectionString;
+
+        private ICommand _buildPayrollReportCommand;
+        private ICommand _buildListOfEmployeesReportCommand;
+        private int _filterCompanyIDReport;
+        private byte _filterExperienceInYear;
+        private byte _filterAge;
+        private ushort _filterYearOfBirth;
+        private bool _isFilterTypeAge;
+        private bool _isFilterTypeYearOfBirth;
+        private readonly HashSet<byte> _experienceYears;
+        private readonly HashSet<byte> _ages;
+        private readonly HashSet<ushort> _yearsOfBirth;
+
+        private const byte CountExperienceYears = 30;
+        private const byte StartWorkAge = 18;
+        private const byte EndWorkAge = 100;
+
+
     }
 }

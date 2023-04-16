@@ -134,6 +134,13 @@
                     </StackPanel>
                 </GroupBox>
 
+                <StackPanel Style="{StaticResource LabelValuePanel}">
+                    <TextBlock Text="Дата трудоустройства:"
+                               Style="{StaticResource PropertyLabelBlock}" />
+                    <DatePicker SelectedDate="{Binding DateEmployment}"
+                                Style="{StaticResource DateValueBlock}"/>
+                </StackPanel>
+
             </StackPanel>
         </StackPanel>
     </DataTemplate>
